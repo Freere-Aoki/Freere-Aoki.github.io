@@ -81,6 +81,59 @@
 
     
         <h2 class="title">
+            <a href="/2021/03/12/%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0/">
+                排序函数
+            </a>
+        </h2>
+    
+    <time>
+        Mar 12, 2021
+    </time>
+    <section class="content">
+        <h5><span id="排序函数">排序函数：</span></h5><p>  排序函数的作用是基于一个结果集返回一个排序值。排序值就是一个数字，这个数字是典型的以1开始且自增长为1的行值。由排序函数来决定排序值。可以使唯一的对于当前结果集，或者某些行数据有相同的排序值。接下来介绍不同的排序函数以及如何使用这些函数。</p>
+<p>示例数据：</p>
+<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210312144133.png" alt="QQ截图20210312144133" style="zoom:80%;">
+
+<p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--select 函数名()over(order by 想排序的列名) from 表名</span></span><br><span class="line"><span class="comment">--such as </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">rank</span>()<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> ssex <span class="keyword">order</span> <span class="keyword">by</span> sage <span class="keyword">desc</span>) </span><br><span class="line"><span class="keyword">from</span> &quot;student&quot;</span><br></pre></td></tr></table></figure>
+
+<p><em>注：over（）开窗函数用法在此文中不进行介绍</em></p>
+<h6><span id="row_number"><strong>ROW_NUMBER()</strong></span></h6><p><strong>定义</strong>：ROW_NUMBER()函数作用就是将select查询到的数据进行排序，每一条数据加一个序号，他不能用做于学生年龄的排名，一般多用于分页查询，因为在遇到相同年龄时序号依然会继续自增，而非并列的序号。</p>
+<p><strong>栗子：</strong>根据年龄降序排列学生</p>
+<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210312145034.png" alt="QQ截图20210312145034" style="zoom:80%;">
+
+<p>ROW_NUMBER（）当遇到相同年龄时序号依然会自增</p>
+<h6><span id="rank"><strong>RANK()</strong></span></h6><p><strong>定义：</strong>RANK()函数，顾名思义排名函数，可以对某一个字段进行排名，与ROW_NUMBER()不同，当存在相同年龄的学生时，ROW_NUMBER()会继续进行排序，他们的序号不相同，而Rank()则不一样，当出现相同的年龄时，他们的排名是一样的，并且会跳过已经占用的序号。</p>
+<p><strong>栗子：</strong>根据年龄降序排列学生</p>
+<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210312145927.png" alt="QQ截图20210312145927" style="zoom:80%;">
+
+<p><em>这里第五条数据突然从2号序号跳跃到5号序号，是因为上面已经有四位同学被排序过，按照已经被排序的数据条数就是5号</em></p>
+<p>RANK（）当遇到相同年龄时序号时序号不会自增，而是和相同年龄时的序号相同。同时当再次向下排序遇到不同年龄时，会根据已进行排序的条数来跳跃序号。</p>
+<h6><span id="dense_rank"><strong>DENSE_RANK()</strong></span></h6><p><strong>定义</strong>：DENSE_RANK()函数也是排名函数，和RANK()功能相似，也是对字段进行排名，那它和RANK()到底有什么不同那？</p>
+<p><strong>NTILE()</strong></p>
+<p><strong>定义</strong>： NTILE函数对一个数据分区中的有序结果集进行划分，将其分组为各个桶，并为每个小组分配一个唯一的组编号。各个组有编号，编号从1开始，就像我们说的’分区’一样 ，分为几个区，一个区会有多少个。</p>
+<ul>
+<li>可以看成是：它把有序的数据集合 <strong>平均分配</strong> 到 <strong>指定的数量</strong>（num）个桶中, 将桶号分配给每一行。如果不能平均分配，则优先分配较小编号的桶，并且各个桶中能放的行数最多相差1。</li>
+</ul>
+<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210312160137.png" alt="QQ截图20210312160137" style="zoom:80%;">
+
+<p><em>将年龄降序并且平均分为四个桶（区）</em></p>
+<p>以上为四个排序函数的用法，最后一个可能不算排序，而是根据排序内容分桶，应用场景一般不为排序。而这些排序函数都依赖于over分窗函数，可以看到排序都是在它之中进行的，同时它也可以使用partition by排序的同时分组，类似于group by，也可以根据row和range进行开窗，但这里不过多解释。！</p>
+<img src="C:\Users\12748\Desktop\20200429013947.52ff80ba8cacf5780b8e9e93e02e02ef.png" alt="20200429013947.52ff80ba8cacf5780b8e9e93e02e02ef" style="zoom:33%;">
+
+
+
+        
+
+        
+
+    </section>
+</article>
+  
+    <article class="post ">
+
+    
+        <h2 class="title">
             <a href="/2021/03/08/wHo-i-M-I/">
                 wHo i&#39;M I
             </a>
