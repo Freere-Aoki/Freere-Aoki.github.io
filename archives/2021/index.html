@@ -107,19 +107,19 @@
 <p><strong>分区（partition by ）：</strong></p>
 <p>功能与group by几乎相同，但group by对于聚合的分组只显示一行数据，并且select后的字段如果其中一个被group by，那么其他字段要么是聚合函数要么也被group by分组聚合。</p>
 <p>栗子：分别求男女同学年龄总和</p>
-<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210315093653.png" alt="QQ截图20210315093653" style="zoom:80%;">
+<img src="\img\QQ截图20210315093653.png" alt="QQ截图20210315093653" style="zoom:80%;">
 
 <p>而聚合函数搭配over（）可以一组返回多行数据，而且其他字段不需要为被分组或被聚合。</p>
 <p><strong>排序（order by）：</strong></p>
 <p>栗子：男女分别根据年龄降序排列</p>
-<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210315100337.png" alt="QQ截图20210315100337" style="zoom:80%;">
+<img src="\img\QQ截图20210315100337.png" alt="QQ截图20210315100337" style="zoom:80%;">
 
 
 
 <p>没什么需要多说的，这里使用了rank()函数排序，partition by相当于group by，order by还是原意。</p>
 <p>注：关于rank()等排序函数请移步其他文章，本文不做说明</p>
 <p>栗子ii：男女按照年龄降序分别求出年龄累计</p>
-<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210315135813.png" alt="QQ截图20210315135813" style="zoom:80%;">
+<img src="\img\QQ截图20210315135813.png" alt="QQ截图20210315135813" style="zoom:80%;">
 
 <p>这里发生了变化，当使用sum()或count()配合over使用，并且使用partition by和order by，就会根据排序进行逐渐的累加或者求和，可以用于计算各个月份随时间累计数等情况</p>
 <p><strong>窗口（rows/range）注：rows可以使用，但是range没研究明白报错：</strong></p>
@@ -129,7 +129,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--每行数据都会被开窗影响，每行数据都会根据开窗的行数来向上或向下进行函数的操作。</span></span><br><span class="line"><span class="comment">--当上面没有行时上面的行不做影响，下面也没有行时同上。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>,<span class="built_in">sum</span>(sage)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> sage <span class="keyword">rows</span> <span class="keyword">between</span> 前多少行 preceding <span class="keyword">and</span> 后多少行 following)</span><br><span class="line"><span class="keyword">from</span> &quot;student&quot;</span><br></pre></td></tr></table></figure>
 
 <p>栗子：对分区中的连续两行计算加和，将每行和下一行进行相加</p>
-<img src="C:\Users\12748\Desktop\blog-img\QQ截图20210315150441.png" alt="QQ截图20210315150441" style="zoom:80%;">
+<img src="\img\QQ截图20210315150441.png" alt="QQ截图20210315150441" style="zoom:80%;">
 
 <p>第一行=第一行sage+第二行sage，第二行=第二行sage+第三行sage………..以此类推</p>
 <p>图中第五行数据和第十行数据都是分区中的最后一行数据，没有下面的行进行相加所以是原数</p>
