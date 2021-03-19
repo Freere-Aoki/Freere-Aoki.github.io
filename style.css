@@ -1005,6 +1005,9 @@ pre {
         width: 100%;
         margin: 0;
         box-shadow: none; } }
+  .content .bigimg {
+    width: 114%;
+    margin: 0 -6.95%; }
   .content hr {
     border: 0;
     border-bottom: 1px solid #ddd; }

@@ -34,6 +34,9 @@
         width: 100%;
         margin: 0;
         box-shadow: none; } }
+  .content .bigimg {
+    width: 200%;
+    margin: 0 -53%; }
   .content hr {
     border: 0;
     border-bottom: 1px solid #ddd; }
