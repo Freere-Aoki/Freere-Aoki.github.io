@@ -37,6 +37,9 @@
   .content .bigimg {
     width: 200%;
     margin: 0 -53%; }
+  .content .litimg {
+    width: 114%;
+    margin: 0 -6.95%; }
   .content hr {
     border: 0;
     border-bottom: 1px solid #ddd; }

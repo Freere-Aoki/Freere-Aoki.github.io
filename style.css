@@ -1006,6 +1006,9 @@ pre {
         margin: 0;
         box-shadow: none; } }
   .content .bigimg {
+    width: 200%;
+    margin: 0 -53%; }
+  .content .litimg {
     width: 114%;
     margin: 0 -6.95%; }
   .content hr {
