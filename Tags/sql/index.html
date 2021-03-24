@@ -122,10 +122,34 @@
 </ol>
 <p><strong>replace函数</strong></p>
 <p><strong>语法：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(char, search_string,replacement_string)</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(expr, from_string,to_string)</span><br></pre></td></tr></table></figure>
 
-<p>部分转自</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010104750/article/details/52388609">translate函数的用法</a></p>
+<p>功能：用法和上文中的translate的用法相同，唯一不同的是translate是会对expr中的字符一个一个和from_string进行匹配，而replace却类似于模糊查询like，会在expr中查找包含from_string的部分并且进行替换为to_string。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;fk&#x27;</span> ,<span class="string">&#x27;j&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgsgswsgs</span></span><br><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;sg&#x27;</span> ,<span class="string">&#x27;eeerrrttt&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgeeerrrtttsweeerrrttts</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：</strong></p>
+<p>第一个例子中由于’fgsgswsgs’中没有与’fk’匹配的字符串，</p>
+<p>​      故返回值仍然是’fgsgswsgs’；</p>
+<p>​      第二个例子中将’fgsgswsgs’中的字符串’sg’全部转换为’eeerrrttt’。</p>
+<p>总结：综上所述，replace与translate都是替代函数，</p>
+<p>​     只不过replace针对的是字符串，而translate针对的是单个字符。</p>
+<p><strong>和replace函数的区别</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return itmyhome@163.com</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> replace(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  itmyhome#163%com</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的translate函数是将#替换为@，%替换为.</p>
+<p>而replace却没有实现此效果，是因为没有找到#%整体的组合</p>
+<p>部分引自</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010104750/article/details/52388609">translate函数的用法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/128565.htm">Oracle中的translate函数和replace函数的用法详解</a></li>
+</ul>
+<img src="\img\53186325_p0.jpg" alt="53186325_p0" style="zoom:100%;">
+
+<p><em><strong>戦いの前夜</strong></em></p>
 
 
         
