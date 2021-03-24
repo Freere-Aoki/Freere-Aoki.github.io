@@ -80,6 +80,70 @@
 
     
         <h2 class="title">
+            <a href="/2021/03/24/Oracle%E4%B8%AD%E7%9A%84translate%E5%87%BD%E6%95%B0%E5%92%8Creplace%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/">
+                Oracle中的translate函数和replace函数的用法
+            </a>
+        </h2>
+    
+    <time>
+        3月 24, 2021
+    </time>
+    <section class="content">
+        <p>接触到此函数目的是为了判断某一单元格数据是在这里插入代码片否为纯数字，虽然实际来说TRANSLATE()实际不是为了判断数据格式。</p>
+<p><strong>translate函数语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">translate</span>(expr, from_string, to_string)</span><br></pre></td></tr></table></figure>
+
+<p>功能：在expr中寻找匹配from_string中符合的字符下标，随后根据下标去to_string中寻找对应的字符替换掉expr中对应下标的字符。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac&#x27;</span>,<span class="string">&#x27;ab2&#x27;</span>,<span class="string">&#x27;00&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return 0c</span></span><br></pre></td></tr></table></figure>
+
+<p>首先拿出ac中的a去匹配ab2中的字符，他会一个字符一个字符的进行判断。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a==a <span class="literal">true</span>      	<span class="comment">//a和ab2中的第一个字符比较，结果正确</span></span><br><span class="line">a==b <span class="literal">false</span>      <span class="comment">//a和ab2中的第二个字符比较，结果错误</span></span><br><span class="line">a==<span class="number">2</span> <span class="literal">false</span>      <span class="comment">//a和ab2中的第三个字符比较，结果错误</span></span><br></pre></td></tr></table></figure>
+
+<p>而其中的a匹配到了ab2中的字符，a在ab2中为第一位，所以也去00中寻找第一位进行替换，这时是0c。</p>
+<p>再去匹配第二位的c，而在ab2中没有找到，所以不进行替换。</p>
+<p>所以返回的结果为0c。</p>
+<p><strong>栗子ii：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac1&#x27;</span>,<span class="string">&#x27;abc123&#x27;</span>,<span class="string">&#x27;abc&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return ac</span></span><br></pre></td></tr></table></figure>
+
+<p>当to_string比from_string短时，会对多余的位数进行剔除</p>
+<p>这里中进行匹配到最后的1时，发现1在abc123中位置为第四位，而通过第四位去替换，去寻找abc的第四位时发现abc没有第四位，这时会将1剔除，返回的结果为ac。</p>
+<p>  需要注意的是，to_str不能是NULL或者’’，否则会返回空值。</p>
+<ol>
+<li>translate也不能用于CLOB，再说得简单一点，也就是<br>如果string中的字符如果在from_string中没有，那么返回时被保留</li>
+<li>如果string中的字符是from_string中的”额外字符”，那么返回时被删除</li>
+<li>如果string中的字符在from_string中找到，且在to_string中有相应位置的字符，那么返回时用to_string中的字符替换string中的字符</li>
+</ol>
+<p><strong>replace函数</strong></p>
+<p><strong>语法：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(char, search_string,replacement_string)</span><br></pre></td></tr></table></figure>
+
+<p>部分转自</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010104750/article/details/52388609">translate函数的用法</a></p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
             <a href="/2021/03/22/python%E7%88%AC%E8%99%AB-%E7%88%AC%E5%8F%96steam%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE%EF%BC%88steam%E6%B8%B8%E6%88%8F%E5%9C%A8%E7%BA%BF%E4%BA%BA%E6%95%B0%EF%BC%89%EF%BC%88%E4%B8%80%EF%BC%89/">
                 python爬虫-爬取steam统计数据（steam游戏在线人数）
             </a>
