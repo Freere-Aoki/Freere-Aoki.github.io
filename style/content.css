@@ -37,6 +37,11 @@
   .content .bigimg {
     width: 200%;
     margin: 0 -50%; }
+    @media (max-width: 820px) {
+      .content .bigimg {
+        width: 100%;
+        margin: 0;
+        box-shadow: none; } }
   .content .litimg {
     width: 114%;
     margin: 0 -6.95%; }
