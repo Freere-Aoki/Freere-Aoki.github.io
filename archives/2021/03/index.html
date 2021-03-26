@@ -81,6 +81,255 @@
   
     
 
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/26/SAP-HANA-PROCEDURE-sap-hana%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/">
+                SAP HANA PROCEDURE(sap hana数据库 存储过程)
+            </a>
+        </h2>
+    
+    <time>
+        3月 26, 2021
+    </time>
+    <section class="content">
+        <h1><span id="存储过程">存储过程</span></h1><p>内容引自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_Toc473120244">HANA SQLScript</a>第三部分储存过程-创建储存过程<del>是真长</del></p>
+<h2><span id="31create-procedure">3.1CREATE PROCEDURE</span></h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> [<span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span>.]<span class="operator">&lt;</span>proc_name<span class="operator">&gt;</span> [(<span class="operator">&lt;</span>parameter_clause<span class="operator">&gt;</span>)] [<span class="keyword">LANGUAGE</span> <span class="operator">&lt;</span>lang<span class="operator">&gt;</span>] [<span class="keyword">SQL</span> SECURITY <span class="operator">&lt;</span>mode<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">DEFAULT</span> SCHEMA <span class="operator">&lt;</span>default_schema_name<span class="operator">&gt;</span>][<span class="keyword">READS</span> <span class="keyword">SQL</span> DATA [<span class="keyword">WITH</span> <span class="keyword">RESULT</span> <span class="keyword">VIEW</span> ]] <span class="keyword">AS</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">BEGIN</span> [SEQUENTIAL EXECUTION]</span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span>procedure_body<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p>The CREATE PROCEDURE statement creates a procedure using the specified programming language <lang>.</lang></p>
+<p>DeepL翻译：CREATE PROCEDURE语句使用指定的编程语言<lang>创建一个过程。</lang></p>
+<h3><span id="311">3.1.1   <parameter_clause></parameter_clause></span></h3><ol>
+<li><parameter_clause> ::= <parameter> [{,<parameter>}…]<ol>
+<li><parameter> ::= [<param_inout>] <param_name> <param_type><ol>
+<li><param_inout> ::= IN|OUT|INOUT    </param_inout></li>
+<li><param_type> ::= <sql_type> | <table_type> | <table_type_definition>              <ol>
+<li><sql_type> ::= DATE | TIME| TIMESTAMP | SECONDDATE | TINYINT | SMALLINT |INTEGER | BIGINT | DECIMAL | SMALLDECIMAL | REAL | DOUBLE<br>| VARCHAR | NVARCHAR | ALPHANUM | VARBINARY | CLOB | NCLOB | BLOB</sql_type></li>
+<li><table_type_defintion> ::= TABLE (<column_list_definition>)  <ol>
+<li><column_list_definition> ::= <column_elem>[{, <column_elem>}…]<ol>
+<li><column_elem> ::= <column_name> <data_type></data_type></column_name></column_elem></li>
+</ol>
+</column_elem></column_elem></column_list_definition></li>
+</ol>
+</column_list_definition></table_type_defintion></li>
+</ol>
+</table_type_definition></table_type></sql_type></param_type></li>
+</ol>
+</param_type></param_name></param_inout></parameter></li>
+</ol>
+</parameter></parameter></parameter_clause></li>
+</ol>
+<p>输入或输出参数类型可以是标准的基础数据类型与表类型，但INOUT参数只能是标准数据类型</p>
+<p><param_inout>：默认为IN</param_inout></p>
+<p><table_type_defintion>：参数类型如果是表类型，这个表类型可以是预先使用Create Type…As Table语句创建的类型对象，也可以在指定存储过程参数类型时才定义表类型</table_type_defintion></p>
+<h3><span id="312-language">3.1.2   LANGUAGE <lang></lang></span></h3><p><lang> ::= SQLSCRIPT | R</lang></p>
+<p>默认为: SQLSCRIPT。指定存储过程实现的程序语言</p>
+<h3><span id="313-sql-security">3.1.3   SQL SECURITY <mode></mode></span></h3><p><mode> ::= DEFINER | INVOKER</mode></p>
+<p>默认: DEFINER，指定存储过程的安全模式</p>
+<p>DEFINER：Specifies that the execution of the procedure is performed with the privileges of the definer of the procedure. </p>
+<p>DEFINER：只有存储过程的定义者才能执行？</p>
+<p>INVOKER：Specifies that the execution of the procedure is performed with the privileges of the invoker of the procedure.</p>
+<h3><span id="314-reads-sql-data">3.1.4   READS SQL DATA</span></h3><p>存储过程为只读的，不能包含DDL与DML（INSERT、UPDATE、DELETE）语句（即只能使用查询SQL与DCL语句），如果调用其他存储过程，则被调用过程也是只读的。设置参数会有特定的优化</p>
+<h3><span id="315-with-result-view">3.1.5   WITH RESULT VIEW <view_name></view_name></span></h3><p>Specifies the result view to be used as the output of a read-only procedure.将只读取存储过程的输出看做结果视图</p>
+<p>When a result view is defined for a procedure, it can be called by an SQL statement in the same way as a tableor view. See Example 2 - Using a result view below.定义了结果视图的存储过程，可以被其他查询SQL用来查询，此时存储过程就像一个表或视图</p>
+<h3><span id="316-sequential-execution">3.1.6   SEQUENTIAL EXECUTION</span></h3><p>This statement will force sequential execution of the procedure logic. No parallelism takes place.不允许存储过程并行执行</p>
+<h3><span id="317">3.1.7   <procedure_body></procedure_body></span></h3><p><procedure_body> ::= [<proc_decl_list>]              定义块<br>[<proc_handler_list>]            异常处理块<br><proc_stmt_list>                 存储体语句块</proc_stmt_list></proc_handler_list></proc_decl_list></procedure_body></p>
+<p>Defines the main body of the procedure according to the programming language selected.过程的主体由设定的程序语言来定义</p>
+<h4><span id="3171-定义变量">3.1.7.1    <proc_decl_list> 定义变量</proc_decl_list></span></h4><ol>
+<li><proc_decl_list> ::= <proc_decl> [{<proc_decl>}…]<ol>
+<li><proc_decl> ::= <strong>DECLARE</strong> {<proc_variable>|<proc_table_variable>|<proc_cursor>|<proc_condition>} ;<ol>
+<li><code>&lt;proc_variable&gt;::= &lt;variable_name_list&gt; [**CONSTANT**] &#123;&lt;sql_type&gt;|&lt;array_datatype&gt;&#125;[NOT NULL][&lt;proc_default&gt;]</code><ol>
+<li><variable_name_list> ::= <variable_name>[{, &lt;variable_name}…]</variable_name></variable_name_list></li>
+<li><array_datatype> ::= <sql_type> ARRAY [ = <array_constructor> ]<ol>
+<li><array_constructor> ::= ARRAY (<expression> [ { , <expression> }…] )</expression></expression></array_constructor></li>
+</ol>
+</array_constructor></sql_type></array_datatype></li>
+<li><proc_default> ::= (DEFAULT | ‘=’ ) <value>|<expression></expression></value></proc_default></li>
+</ol>
+</li>
+<li><proc_table_variable> ::= <variable_name_list> {<table_type_definition>|<table_type>}<ol>
+<li><variable_name_list> ::= <variable_name>[{, &lt;variable_name}…]</variable_name></variable_name_list></li>
+<li><table_type_definition> ::= TABLE(<column_list_elements>)<ol>
+<li><column_list_elements> ::= (<column_definition>[{,<column_definition>}…])</column_definition></column_definition></column_list_elements></li>
+</ol>
+</column_list_elements></table_type_definition></li>
+</ol>
+</table_type></table_type_definition></variable_name_list></proc_table_variable></li>
+<li><proc_cursor> ::= <strong>CURSOR</strong> <cursor_name> [ ( proc_cursor_param_list ) ] <strong>FOR</strong> <subquery> ;<ol>
+<li><proc_cursor_param_list> ::= <proc_cursor_param> [{,<proc_cursor_param>}…]<ol>
+<li><proc_cursor_param> ::= <param_name> <datatype></datatype></param_name></proc_cursor_param></li>
+</ol>
+</proc_cursor_param></proc_cursor_param></proc_cursor_param_list></li>
+</ol>
+</subquery></cursor_name></proc_cursor></li>
+<li><proc_condition> ::= <variable_name> CONDITION | <variable_name> CONDITION FOR <sql_error_code></sql_error_code></variable_name></variable_name></proc_condition></li>
+</ol>
+</proc_condition></proc_cursor></proc_table_variable></proc_variable></proc_decl></li>
+</ol>
+</proc_decl></proc_decl></proc_decl_list></li>
+</ol>
+<p><strong>CREATE</strong> <strong>procedure</strong> proc() <strong>LANGUAGE</strong> SQLSCRIPT <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>​    <strong>declare</strong> a <strong>int****default</strong> 2;–基本类型变量使用前一定要定义</p>
+<p>​    – 如果某个变量是表类型的变量，可以不用声明，直接就可以使用，这与基本类型变量是不一样的</p>
+<p>​    – ——基本类型变量使用前需要定义</p>
+<p>​    –declare tab_var1 table(a int,b int); 表类型变量可不定义就使用</p>
+<p>​    a := 1;</p>
+<p>​    – a = 1; 基本类型变量赋值时，等号前一定要加冒号，这与表类型变量恰好相反</p>
+<p>​    tab_var1 = <strong>select</strong> 1 <strong>as</strong> a,2 <strong>as</strong> b <strong>from</strong> dummy;</p>
+<p>​    –tab_var1 := select 1 as a,2 as b from dummy; 这是错误，表类型变量赋值时，只能使用等号，不能在等号前加冒号，这与基本类型变量赋值相反</p>
+<p><strong>END</strong>;</p>
+<h1><span id="暂时看到这了太长了下次再接着看"><strong>暂时看到这了：太长了下次再接着看</strong></span></h1><h4><span id="3172-异常处理">3.1.7.2    <proc_handler_list> 异常处理</proc_handler_list></span></h4><p><proc_handler_list> ::= <proc_handler> [{, <proc_handler>}…]                </proc_handler></proc_handler></proc_handler_list></p>
+<p><proc_handler>::= <a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_DECLARE_EXIT_HANDLER">DECLARE EXIT HANDLER FOR</a> <proc_condition_value_list> <proc_stmt> ;</proc_stmt></proc_condition_value_list></proc_handler></p>
+<p><proc_condition_value_list> ::= <proc_condition_value>{,<proc_condition_value>}…]</proc_condition_value></proc_condition_value></proc_condition_value_list></p>
+<p>​                        <proc_condition_value> ::= <a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_Autonomous_Transaction">SQLEXCEPTION </a>| SQLWARNING | <sql_error_code> | <condition_name></condition_name></sql_error_code></proc_condition_value></p>
+<h4><span id="3173-过程体">3.1.7.3    <proc_stmt_list> 过程体</proc_stmt_list></span></h4><p><proc_stmt_list> ::= {<proc_stmt>}…</proc_stmt></proc_stmt_list></p>
+<p><proc_stmt> ::= <proc_block>| <proc_assign>| <proc_single_assign>| <proc_multi_assign>| <proc_if>| <proc_loop>| <proc_while>| <proc_for>|<br><proc_foreach>| <proc_exit>| <proc_continue>| <proc_signal>| <proc_resignal>| <proc_sql>| <proc_open>| <proc_fetch>| <proc_close>| <proc_call>| <proc_exec>| <proc_return></proc_return></proc_exec></proc_call></proc_close></proc_fetch></proc_open></proc_sql></proc_resignal></proc_signal></proc_continue></proc_exit></proc_foreach></proc_for></proc_while></proc_loop></proc_if></proc_multi_assign></proc_single_assign></proc_assign></proc_block></proc_stmt></p>
+<h5><span id="31731-内嵌块">3.1.7.3.1   <proc_block> 内嵌块</proc_block></span></h5><p><proc_block> ::= BEGIN <proc_block_option>[<proc_decl_list>][<proc_handler_list>] <proc_stmt_list> END ;</proc_stmt_list></proc_handler_list></proc_decl_list></proc_block_option></proc_block></p>
+<p><proc_block_option> ::= [SEQUENTIAL EXECUTION] [AUTONOMOUS TRANSACTION]| [AUTONOMOUS TRANSACTION] [SEQUENTIAL<br>                                 EXECUTION]</proc_block_option></p>
+<p>内嵌块， BEGIN 、 END是可以内嵌的</p>
+<h5><span id="31732-给变量赋值">3.1.7.3.2   <proc_assign> 给变量赋值</proc_assign></span></h5><p><proc_assign> ::= <variable_name> = { <expression> | <array_function> } ;| <variable_name> ‘[‘ <expression> ‘]’ = <expression> ;</expression></expression></variable_name></array_function></expression></variable_name></proc_assign></p>
+<p><array_function> = ARRAY_AGG ( <table_variable>.<column_name> [ ORDER BY <sort_spec_list> ] ) | CARDINALITY ( <array_variable_name>) | TRIM_ARRAY<br>( <array_variable_name> , <array_variable_name>) | ARRAY ( <array_variable_name_list> )</array_variable_name_list></array_variable_name></array_variable_name></array_variable_name></sort_spec_list></column_name></table_variable></array_function></p>
+<p>​                                        <array_variable_name_list> ::=&lt; array_variable_name &gt; [{, &lt; array_variable_name &gt;}…]  这个是自己 加的，是否正确？</array_variable_name_list></p>
+<p>Assign values to variables. An <expression> can be either a simple expression, such as a character, a date, or a number, or it can be a scalar function or a scalar user-defined function.将值赋给变量。<expression>可以是一个简单的表达式（如字符、日期、数字表达式），或者是标准函数，或用户自定义函数</expression></expression></p>
+<p>有关 ARRAY 、ARRAY_AGG、CARDINALITY、TRIM_ARRAY函数请参考后面数组函数</p>
+<h5><span id="31733-单个赋值">3.1.7.3.3   <proc_single_assign> 单个赋值</proc_single_assign></span></h5><p><proc_single_assign> ::= <variable_name> = <subquery> | <variable_name> = <proc_ce_call> | <variable_name> = <proc_apply_filter>| <variable_name> =<br><unnest_function></unnest_function></variable_name></proc_apply_filter></variable_name></proc_ce_call></variable_name></subquery></variable_name></proc_single_assign></p>
+<p><proc_ce_call> ::= TRACE ( <variable_name> ) ;| CE_LEFT_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ <expr_alias_vector>] ) ;<br> | CE_RIGHT_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ [ <expr_alias_vector>] ) ; | CE_FULL_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ [ <expr_alias_vector>] ); | CE_JOIN ( <table_variable> , <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ [<expr_alias_vector>] ) ;| CE_UNION_ALL ( <table_variable> , <table_variable> ) ;| CE_COLUMN_TABLE ( <table_name> [ <expr_alias_vector>] ) ; | CE_JOIN_VIEW ( <table_name> [ <expr_alias_vector>] ) ;| CE_CALC_VIEW ( <table_name> [ <expr_alias_vector>] ) ; | CE_OLAP_VIEW ( <table_name> [ <expr_alias_vector>] ) ; | CE_PROJECTION ( <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ <opt_str_const> ) ; | CE_PROJECTION ( <table_variable> <opt_str_const> ) ; | CE_AGGREGATION ( <table_variable> , ‘[‘<agg_alias_comma_list> ‘]’ [ <expr_alias_vector>] ); | CE_CONVERSION ( <table_variable> , ‘[‘<proc_key_value_pair_comma_list> ‘]’ [ <expr_alias_vector>] ) ;| CE_VERTICAL_UNION ( <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ <vertical_union_param_pair_list> ) ;| CE_COMM2R ( <table_variable> , <int_const> , <str_const> ,<int_const> , <int_const> , <str_const> ) ;</str_const></int_const></int_const></str_const></int_const></table_variable></vertical_union_param_pair_list></expr_alias_comma_list></table_variable></expr_alias_vector></proc_key_value_pair_comma_list></table_variable></expr_alias_vector></agg_alias_comma_list></table_variable></opt_str_const></table_variable></opt_str_const></expr_alias_comma_list></table_variable></expr_alias_vector></table_name></expr_alias_vector></table_name></expr_alias_vector></table_name></expr_alias_vector></table_name></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></variable_name></proc_ce_call></p>
+<p><table_name> ::= [<schema_name>.]<identifier></identifier></schema_name></table_name></p>
+<p><proc_apply_filter> ::= APPLY_FILTER ( {<table_name> | <table_variable>},<variable_name> ) ;</variable_name></table_variable></table_name></proc_apply_filter></p>
+<p><unnest_function> ::= UNNEST ( <variable_name_list> ) [ WITH ORDINALITY ][<as_col_names>] ;</as_col_names></variable_name_list></unnest_function></p>
+<p><variable_name_list> ::= <variable_name> [{, <variable_name>}…]</variable_name></variable_name></variable_name_list></p>
+<p><as_col_names> ::= AS [table_name] ( <column_name_list> )</column_name_list></as_col_names></p>
+<p><column_name_list> ::= <column_name>[{, <column_name>}…]</column_name></column_name></column_name_list></p>
+<p>WITH ORDINALTIY：Appends an ordinal column to the return values.</p>
+<h5><span id="31734-多个赋值">3.1.7.3.4   <proc_multi_assign> 多个赋值</proc_multi_assign></span></h5><p><proc_multi_assign> ::= (<var_name_list>) = <function_expression></function_expression></var_name_list></proc_multi_assign></p>
+<p>Assign values to a list of variables with only one function evaluation. For example, <function_expression>must be a scalar user defined function and the number of elements in <var_name_list> must be equal to the number of output parameters of the scalar UDF（用户定义函数）.</var_name_list></function_expression></p>
+<p><function_expression>：用户自定义函数</function_expression></p>
+<p>函数的输入参数个数需与<var_name_list>中的参数个数相同</var_name_list></p>
+<h5><span id="31735">3.1.7.3.5   <proc_if></proc_if></span></h5><p><proc_if> ::= <strong>IF</strong> <condition> <strong>THEN</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> [<proc_elsif_list>] [<proc_else>] <strong>END IF</strong> ;</proc_else></proc_elsif_list></proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_if></p>
+<p><proc_elsif_list> ::= <strong>ELSEIF</strong> <condition> <strong>THEN</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list></proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_elsif_list></p>
+<p><proc_else> ::= <strong>ELSE</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>][<proc_handler_list>] <proc_stmt_list></proc_stmt_list></proc_handler_list></proc_decl_list></proc_else></p>
+<p>You use IF - THEN - ELSE IF to control execution flow with conditionals.</p>
+<h5><span id="31736">3.1.7.3.6   <proc_loop></proc_loop></span></h5><p><proc_loop> ::= <strong>LOOP</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> <strong>END LOOP</strong> ;</proc_stmt_list></proc_handler_list></proc_decl_list></proc_loop></p>
+<p>You use loop to repeatedly execute a set of statements.</p>
+<h5><span id="31737">3.1.7.3.7   <proc_while></proc_while></span></h5><p><proc_while> ::= <strong>WHILE</strong> <condition> <strong>DO</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> <strong>END WHILE</strong> ;</proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_while></p>
+<p>You use while to repeatedly call a set of trigger statements while a condition is true.</p>
+<h5><span id="31738">3.1.7.3.8   <proc_for></proc_for></span></h5><p><proc_for> ::= <strong>FOR</strong> <column_name> <strong>IN</strong> [ REVERSE ] <expression> […] <expression> <strong>DO</strong> [SEQUENTIAL EXECUTION]</expression></expression></column_name></proc_for></p>
+<p>[<proc_decl_list>]</proc_decl_list></p>
+<p> [<proc_handler_list>]</proc_handler_list></p>
+<proc_stmt_list>
+
+<p><strong>END FOR</strong> ;</p>
+<p>You use FOR - IN loops to iterate over a set of data.</p>
+<h5><span id="31739">3.1.7.3.9   <proc_foreach></proc_foreach></span></h5><p><proc_foreach> ::= <strong>FOR</strong> <column_name> <strong>AS</strong> <column_name> [<open_param_list>] <strong>DO</strong> [SEQUENTIAL EXECUTION]</open_param_list></column_name></column_name></proc_foreach></p>
+<p>[<proc_decl_list>]</proc_decl_list></p>
+<p>[<proc_handler_list>]</proc_handler_list></p>
+<proc_stmt_list>
+
+<p>END <strong>FOR</strong> ;</p>
+<p><open_param_list> ::= ( <expression> [ { , <expression> }…] )</expression></expression></open_param_list></p>
+<p>You use FOR - EACH loops to iterate over all elements in a set of data.</p>
+<h5><span id="317310">3.1.7.3.10   <proc_exit></proc_exit></span></h5><p><proc_exit> ::= BREAK ;</proc_exit></p>
+<p>Terminates a loop.结束循环</p>
+<h5><span id="317311">3.1.7.3.11   <proc_continue></proc_continue></span></h5><p><proc_continue> ::= CONTINUE ;</proc_continue></p>
+<p>Skips a current loop iteration and continues with the next value.结束当前循环继续下一次循环</p>
+<h5><span id="317312">3.1.7.3.12   <proc_signal></proc_signal></span></h5><p><proc_signal> ::= SIGNAL <signal_value> [<set_signal_info>] ;</set_signal_info></signal_value></proc_signal></p>
+<p>You use the SIGNAL statement to explicitly raise an exception from within your trigger procedures.</p>
+<h5><span id="317313">3.1.7.3.13   <proc_resignal></proc_resignal></span></h5><p><proc_resignal> ::= RESIGNAL [<signal_value>] [<set_signal_info>] ;</set_signal_info></signal_value></proc_resignal></p>
+<p>You use the RESIGNAL statement to raise an exception on the action statement in an exception handler. If an error code is not specified, RESIGNAL will throw the caught exception.重新抛出异常？</p>
+<p><signal_value> ::= <signal_name> | <sql_error_code></sql_error_code></signal_name></signal_value></p>
+<p><signal_name> ::= <identifier></identifier></signal_name></p>
+<p><sql_error_code> ::= <unsigned_integer></unsigned_integer></sql_error_code></p>
+<p>You can SIGNAL or RESIGNAL a signal name or an SQL error code.</p>
+<p><set_signal_info> ::= SET MESSAGE_TEXT = ‘<message_string>‘</message_string></set_signal_info></p>
+<p><message_string> ::= <any_character></any_character></message_string></p>
+<p>You use SET MESSAGE_TEXT to deliver an error message to users when specified error is thrown during procedure execution.</p>
+<h5><span id="317314">3.1.7.3.14   <proc_sql></proc_sql></span></h5><p><proc_sql> ::= <subquery> | <select_into_stmt> | <insert_stmt> | <delete_stmt> | <update_stmt> | <replace_stmt> | <call_stmt> | <create_table> | <drop_table></drop_table></create_table></call_stmt></replace_stmt></update_stmt></delete_stmt></insert_stmt></select_into_stmt></subquery></proc_sql></p>
+<p><insert_stmt>, <delete_stmt>,<update_stmt>,<replace_stmt> and <upsert_stmt>请参考HANA SQL中INSERT , DELETE, UPDATE, REPLACE and UPSERT SQL语句</upsert_stmt></replace_stmt></update_stmt></delete_stmt></insert_stmt></p>
+<p><select_into_stmt> ::= SELECT <select_list> INTO <var_name_list> <from_clause> [<where_clause>] [<group_by_clause>] [<having_clause>] [{<set_operator><br><subquery>, … }] [<order_by_clause>] [<limit>] ;</limit></order_by_clause></subquery></set_operator></having_clause></group_by_clause></where_clause></from_clause></var_name_list></select_list></select_into_stmt></p>
+<p><var_name_list> ::= <var_name>[{, <var_name>}…]   <var_name>为基础类型变量</var_name></var_name></var_name></var_name_list></p>
+<h5><span id="317315">3.1.7.3.15   <proc_open>、<proc_fetch>、<proc_close></proc_close></proc_fetch></proc_open></span></h5><p><proc_open> ::= OPEN <cursor_name> [ <open_param_list>] ;</open_param_list></cursor_name></proc_open></p>
+<p><proc_fetch> ::= FETCH <cursor_name> INTO <column_name_list> ;</column_name_list></cursor_name></proc_fetch></p>
+<p><proc_close> ::= CLOSE <cursor_name> ;</cursor_name></proc_close></p>
+<p>Cursor operations</p>
+<h5><span id="317316">3.1.7.3.16   <proc_call></proc_call></span></h5><p><proc_call> ::= CALL <proc_name> (<param_list>) ;</param_list></proc_name></proc_call></p>
+<p>Calling a procedure</p>
+<h5><span id="317317">3.1.7.3.17   <proc_exec></proc_exec></span></h5><p><proc_exec> ::= {EXEC | EXECUTE IMMEDIATE} <proc_expr> ;</proc_expr></proc_exec></p>
+<p>You use EXEC to make dynamic SQL calls.</p>
+<h5><span id="317318">3.1.7.3.18   <proc_return></proc_return></span></h5><p><proc_return> ::= RETURN [<proc_expr>] ;</proc_expr></proc_return></p>
+<p>Return a value from a procedure.</p>
+<h3><span id="318-examples">3.1.8   Examples</span></h3><p>Example 1 - Creating an SQL Procedure</p>
+<p>You create an SQLScript procedure with the following definition.</p>
+<p><strong>CREATE<strong><strong>COLUMN</strong></strong>TABLE</strong>“SYSTEM”.”T” (“ID”<strong>INTEGER</strong> CS_INT,</p>
+<p>​     “NAME”<strong>VARCHAR</strong>(30),</p>
+<p>​     “PAYMENT”<strong>INTEGER</strong> CS_INT) <strong>UNLOAD****PRIORITY</strong> 5 AUTO <strong>MERGE</strong>;</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(1,’a’,10);</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(2,’b’,20);</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(3,’c’,30);</p>
+<p><strong>CREATE****PROCEDURE</strong> orchestrationProc <strong>LANGUAGE</strong> SQLSCRIPT <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>​    <strong>DECLARE</strong> v_id <strong>INT</strong>;</p>
+<p>​    <strong>DECLARE</strong> v_name <strong>VARCHAR</strong>(30);</p>
+<p>​    <strong>DECLARE</strong> v_pmnt <strong>INT</strong>;</p>
+<p>​    <strong>DECLARE</strong> v_msg <strong>VARCHAR</strong>(200);</p>
+<p>​    <strong>DECLARE****CURSOR</strong> c_cursor1 (p_payment <strong>INT</strong>) <strong>FOR****SELECT</strong> id, name, PAYMENT <strong>FROM</strong> t</p>
+<p>​           <strong>WHERE</strong> payment &gt;= p_payment <strong>ORDER****BY</strong> id <strong>ASC</strong>;</p>
+<p>​    <strong>OPEN</strong> c_cursor1(20);</p>
+<p>​    <strong>FETCH</strong> c_cursor1 <strong>INTO</strong> v_id, v_name, v_pmnt;</p>
+<p>​    v_msg := v_name || ‘ (id ‘ || v_id || ‘) earns ‘ || v_pmnt || ‘ $.’;</p>
+<p>​    <strong>select</strong> v_msg <strong>from</strong> dummy;</p>
+<p>​    <strong>CLOSE</strong> c_cursor1;</p>
+<p><strong>end</strong>;</p>
+<p>Example 2 - Using a result view</p>
+<p>创建带返回视图结果的存储过程：</p>
+<p><strong>CREATE****PROCEDURE</strong> ProcWithResultView(<strong>IN</strong> id <strong>INT</strong>, <strong>OUT</strong> o1 t)</p>
+<p><strong>LANGUAGE</strong> SQLSCRIPT</p>
+<p>READS <strong>SQL</strong> DATA <strong>WITH</strong> RESULT <strong>VIEW</strong> ProcView <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>o1 = <strong>SELECT</strong> * <strong>FROM</strong> t <strong>WHERE</strong> id = :id;</p>
+<p><strong>END</strong>;</p>
+<p>调用存储视图：</p>
+<p><strong>select</strong> * <strong>from</strong> ProcView <strong>with</strong> parameters (‘placeholder’ = (‘</p>
+<p>idid</p>
+<p>‘ ,’2’ ));</p>
+<p><strong>CREATE****PROCEDURE</strong> Proc_test(<strong>IN</strong> id <strong>INT</strong>,<strong>IN</strong> name <strong>varchar</strong>(3),<strong>OUT</strong> o1 “SYSTEM”.”T_COLUMN”)</p>
+<p><strong>LANGUAGE</strong> SQLSCRIPT</p>
+<p>READS <strong>SQL</strong> DATA <strong>WITH</strong> RESULT <strong>VIEW</strong> Proc_View <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>outt = CE_COLUMN_TABLE(“SYSTEM”.”T_COLUMN”,[id,name,payment]);</p>
+<p>–注：过滤条件一定要使用单引号整体引起来；列名一定要使用双引号引起来；</p>
+<p>–如果是字符串，则要使用单引号引起来，因为外层有单引号，所以里面要使用两个单引号代表一个单引号</p>
+<p>–o1 = CE_PROJECTION(:outt,[id,name,payment],’”ID” = :id AND “NAME” = ‘’:name’’’);</p>
+<p>–上面这句等效于下面两句</p>
+<p>o1 = CE_PROJECTION(:outt,[id,name,payment],’”ID” = :id’);</p>
+<p>o1 = CE_PROJECTION(:o1,[id,name,payment],’”NAME” = ‘’:name’’’);</p>
+<p><strong>END</strong>;</p>
+<p><strong>select</strong> * <strong>from</strong> Proc_View <strong>with</strong> parameters (‘placeholder’ = (‘</p>
+<p>idid</p>
+<p>‘ ,’2’ ),’placeholder’ = (‘namename’ ,’b’ ));</p>
+<p>Note</p>
+<p>Procedures and result views produced by procedures are not connected from the security perspective and therefore do not inherit privileges from each other. The security aspects of each object must be handled separately. For example, you must grant the SELECT privilege on a result view and EXECUTE privilege on a connected procedure.</p>
+<img src="\img\7a1c08c79f3df8dccd0ae9edda11728b461028ed.gif" alt="7a1c08c79f3df8dccd0ae9edda11728b461028ed" style="zoom:100%;">
+
+
+
+</proc_stmt_list></proc_stmt_list>
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
 
   
     
