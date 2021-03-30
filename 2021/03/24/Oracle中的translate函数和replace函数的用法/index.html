@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Oracle中的translate函数和replace函数的用法 | 宅谈</title>
+    <meta name="keywords" content="hexo,theme,otakism,otaku"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="google-site-verification" content=""/>
+    <meta name="baidu-site-verification" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="接触到此函数目的是为了判断某一单元格数据是在这里插入代码片否为纯数字，虽然实际来说TRANSLATE()实际不是为了判断数据格式。 translate函数语法： 1translate(expr, from_string, to_string)  功能：在expr中寻找匹配from_string中符合的字符下标，随后根据下标去to_string中寻找对应的字符替换掉expr中对应下标的字符。 exp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle中的translate函数和replace函数的用法">
+<meta property="og:url" content="http://example.com/2021/03/24/Oracle%E4%B8%AD%E7%9A%84translate%E5%87%BD%E6%95%B0%E5%92%8Creplace%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/index.html">
+<meta property="og:site_name" content="宅谈">
+<meta property="og:description" content="接触到此函数目的是为了判断某一单元格数据是在这里插入代码片否为纯数字，虽然实际来说TRANSLATE()实际不是为了判断数据格式。 translate函数语法： 1translate(expr, from_string, to_string)  功能：在expr中寻找匹配from_string中符合的字符下标，随后根据下标去to_string中寻找对应的字符替换掉expr中对应下标的字符。 exp">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/53186325_p0.jpg">
+<meta property="article:published_time" content="2021-03-24T08:38:52.000Z">
+<meta property="article:modified_time" content="2021-03-25T01:57:46.037Z">
+<meta property="article:author" content="Freere-Aoki">
+<meta property="article:tag" content="study">
+<meta property="article:tag" content="sql">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/img/53186325_p0.jpg">
+    
+
+    <!-- Favicon -->
+    
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,700" rel="stylesheet">
+
+    
+<link rel="stylesheet" href="/style.css">
+
+    <script>
+      function setLoadingBarProgress(num) {
+        document.getElementById('loading-bar').style.width = num + "%";
+      }
+    </script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+<script>setLoadingBarProgress(20)</script>
+
+<div id="site-wrapper">
+
+    <header id="header">
+    <div id="header-wrapper" class="clearfix">
+        <a id="logo" href="/">
+            <img src="/img/logo.png"/>
+            <span id="site-desc">
+                otaku keeps alive
+            </span>
+        </a>
+        <button id="site-nav-switch">
+            <span class="icon icon-menu"></span>
+        </button>
+    </div>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+
+    <main id="main" role="main">
+        <article id="post-Oracle中的translate函数和replace函数的用法"
+         class="post article white-box article-type-post"
+         itemscope itemprop="blogPost">
+    <h2 class="title">
+        <a href="/2021/03/24/Oracle%E4%B8%AD%E7%9A%84translate%E5%87%BD%E6%95%B0%E5%92%8Creplace%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/">
+            Oracle中的translate函数和replace函数的用法
+        </a>
+    </h2>
+    <time>
+        3月 24, 2021
+    </time>
+    <section class="content">
+        <div class="article-entry" itemprop="articleBody">
+            <p>接触到此函数目的是为了判断某一单元格数据是在这里插入代码片否为纯数字，虽然实际来说TRANSLATE()实际不是为了判断数据格式。</p>
+<p><strong>translate函数语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">translate</span>(expr, from_string, to_string)</span><br></pre></td></tr></table></figure>
+
+<p>功能：在expr中寻找匹配from_string中符合的字符下标，随后根据下标去to_string中寻找对应的字符替换掉expr中对应下标的字符。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac&#x27;</span>,<span class="string">&#x27;ab2&#x27;</span>,<span class="string">&#x27;00&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return 0c</span></span><br></pre></td></tr></table></figure>
+
+<p>首先拿出ac中的a去匹配ab2中的字符，他会一个字符一个字符的进行判断。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a==a <span class="literal">true</span>      	<span class="comment">//a和ab2中的第一个字符比较，结果正确</span></span><br><span class="line">a==b <span class="literal">false</span>      <span class="comment">//a和ab2中的第二个字符比较，结果错误</span></span><br><span class="line">a==<span class="number">2</span> <span class="literal">false</span>      <span class="comment">//a和ab2中的第三个字符比较，结果错误</span></span><br></pre></td></tr></table></figure>
+
+<p>而其中的a匹配到了ab2中的字符，a在ab2中为第一位，所以也去00中寻找第一位进行替换，这时是0c。</p>
+<p>再去匹配第二位的c，而在ab2中没有找到，所以不进行替换。</p>
+<p>所以返回的结果为0c。</p>
+<p><strong>栗子ii：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac1&#x27;</span>,<span class="string">&#x27;abc123&#x27;</span>,<span class="string">&#x27;abc&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return ac</span></span><br></pre></td></tr></table></figure>
+
+<p>当to_string比from_string短时，会对多余的位数进行剔除</p>
+<p>这里中进行匹配到最后的1时，发现1在abc123中位置为第四位，而通过第四位去替换，去寻找abc的第四位时发现abc没有第四位，这时会将1剔除，返回的结果为ac。</p>
+<p>  需要注意的是，to_str不能是NULL或者’’，否则会返回空值。</p>
+<ol>
+<li>translate也不能用于CLOB，再说得简单一点，也就是<br>如果string中的字符如果在from_string中没有，那么返回时被保留</li>
+<li>如果string中的字符是from_string中的”额外字符”，那么返回时被删除</li>
+<li>如果string中的字符在from_string中找到，且在to_string中有相应位置的字符，那么返回时用to_string中的字符替换string中的字符</li>
+</ol>
+<p><strong>replace函数</strong></p>
+<p><strong>语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(expr, from_string,to_string)</span><br></pre></td></tr></table></figure>
+
+<p>功能：用法和上文中的translate的用法相同，唯一不同的是translate是会对expr中的字符一个一个和from_string进行匹配，而replace却类似于模糊查询like，会在expr中查找包含from_string的部分并且进行替换为to_string。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;fk&#x27;</span> ,<span class="string">&#x27;j&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgsgswsgs</span></span><br><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;sg&#x27;</span> ,<span class="string">&#x27;eeerrrttt&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgeeerrrtttsweeerrrttts</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：</strong></p>
+<p>第一个例子中由于’fgsgswsgs’中没有与’fk’匹配的字符串，</p>
+<p>​      故返回值仍然是’fgsgswsgs’；</p>
+<p>​      第二个例子中将’fgsgswsgs’中的字符串’sg’全部转换为’eeerrrttt’。</p>
+<p>总结：综上所述，replace与translate都是替代函数，</p>
+<p>​     只不过replace针对的是字符串，而translate针对的是单个字符。</p>
+<p><strong>和replace函数的区别</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return itmyhome@163.com</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> replace(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  itmyhome#163%com</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的translate函数是将#替换为@，%替换为.</p>
+<p>而replace却没有实现此效果，是因为没有找到#%整体的组合</p>
+<p>部分引自</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010104750/article/details/52388609">translate函数的用法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/128565.htm">Oracle中的translate函数和replace函数的用法详解</a></li>
+</ul>
+<img class="bigimg" src="\img\53186325_p0.jpg" alt="53186325_p0" style="zoom:100%;">
+
+<p><em><strong>戦いの前夜</strong></em></p>
+
+        </div>
+        <div class="article-tags tags">
+            
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            
+        </div>
+    </section>
+</article>
+
+
+
+
+
+        <script>setLoadingBarProgress(60);</script>
+    </main>
+
+    <footer id="footer" class="clearfix">
+
+    
+
+    <div class="social-wrapper">
+        
+            
+                <a href="https://github.com/artchen" class="social github"
+                   target="_blank" rel="external">
+                    <span class="icon icon-github"></span>
+                </a>
+            
+                <a href="/atom.xml" class="social rss"
+                   target="_blank" rel="external">
+                    <span class="icon icon-rss"></span>
+                </a>
+            
+        
+    </div>
+
+    <div class="theme-by">Theme <span class="codename">Memory</span> designed by <a href="https://artifact.me/"
+                                                                                    target="_blank">Art Chen</a>.
+    </div>
+    <div>&copy; <a href="/">宅谈</a></div>
+
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    <div class="overlay"></div>
+</div>
+
+<div class="site-sidebar" id="site-sidebar">
+
+    
+
+    <div class="sidebar-switch clearfix "
+         style="display: none">
+        <a class="dark-btn active" data-toggle="toc">
+            <span class="icon icon-list"></span>
+            <span class="text">Index</span>
+        </a>
+        <a class="dark-btn" data-toggle="bio">
+            <span class="icon icon-person"></span>
+            <span class="text">Bio</span>
+        </a>
+    </div>
+
+    <div class="site-toc "
+         style="display: none">
+        
+            <div class="no-index">No Index</div>
+        
+    </div>
+
+    <div class="site-bio show"
+         style="display: block">
+
+        <div class="about-me clearfix">
+            <div class="avatar">
+                <img src="/img/avatar.png"/>
+            </div>
+            <div class="info">
+                <a class="name dark-btn" href="/about">
+                    Freere-Aoki
+                </a>
+            </div>
+            <div class="info">
+                <span class="item desc">
+                    你还在期待着什么？
+                </span>
+            </div>
+        </div>
+
+        <div class="menu section">
+            <ul class="clearfix">
+                
+                    <li class="left">
+                        <a href="/about"
+                           onfocus="this.blur();"
+                           class="nav-俺様だ❕ dark-btn block">
+                            About
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/archives"
+                           onfocus="this.blur();"
+                           class="nav-図書館 dark-btn block">
+                            Archives
+                        </a>
+                    </li>
+                
+                    <li class="left">
+                        <a href="/header"
+                           onfocus="this.blur();"
+                           class="nav-俺の頭 dark-btn block">
+                            Header
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/gunName"
+                           onfocus="this.blur();"
+                           class="nav-黑色魅影 dark-btn block">
+                            GunName
+                        </a>
+                    </li>
+                
+                    <li class="left">
+                        <a href="/Links"
+                           onfocus="this.blur();"
+                           class="nav-友人帐 dark-btn block">
+                            LINKS
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/rolex/主页"
+                           onfocus="this.blur();"
+                           class="nav-劳力士 dark-btn block">
+                            Rolex
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="shortcuts">
+        <a href="#header" class="top window-nav dark-btn" id="go-top">
+            <span class="icon icon-chevron-thin-up"></span>
+        </a>
+        <a class="close dark-btn" id="sidebar-close">
+            <span class="icon icon-close"></span>
+        </a>
+        <a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+            <span class="icon icon-chevron-thin-down"></span>
+        </a>
+    </div>
+
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+
+<script src="/js/jquery.fitvids.js"></script>
+
+<script>
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var SEARCH_SERVICE = "";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="/js/app.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+<script>setLoadingBarProgress(100);</script>
+
+</body>
+</html>

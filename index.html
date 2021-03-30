@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>宅谈</title>
+    <meta name="keywords" content="hexo,theme,otakism,otaku"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="google-site-verification" content=""/>
+    <meta name="baidu-site-verification" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="你还在期待着什么？">
+<meta property="og:type" content="website">
+<meta property="og:title" content="宅谈">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="宅谈">
+<meta property="og:description" content="你还在期待着什么？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Freere-Aoki">
+<meta name="twitter:card" content="summary">
+    
+
+    <!-- Favicon -->
+    
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata|Roboto:300,400,700" rel="stylesheet">
+
+    
+<link rel="stylesheet" href="/style.css">
+
+    <script>
+      function setLoadingBarProgress(num) {
+        document.getElementById('loading-bar').style.width = num + "%";
+      }
+    </script>
+
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+
+<div id="loading-bar-wrapper">
+  <div id="loading-bar"></div>
+</div>
+
+<script>setLoadingBarProgress(20)</script>
+
+<div id="site-wrapper">
+
+    <header id="header">
+    <div id="header-wrapper" class="clearfix">
+        <a id="logo" href="/">
+            <img src="/img/logo.png"/>
+            <span id="site-desc">
+                otaku keeps alive
+            </span>
+        </a>
+        <button id="site-nav-switch">
+            <span class="icon icon-menu"></span>
+        </button>
+    </div>
+</header>
+    <script>setLoadingBarProgress(40);</script>
+
+    <main id="main" role="main">
+        
+
+
+
+
+
+<section class="post-list">
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/26/SAP-HANA-PROCEDURE-sap-hana%E6%95%B0%E6%8D%AE%E5%BA%93-%E5%AD%98%E5%82%A8%E8%BF%87%E7%A8%8B/">
+                SAP HANA PROCEDURE(sap hana数据库 存储过程)
+            </a>
+        </h2>
+    
+    <time>
+        3月 26, 2021
+    </time>
+    <section class="content">
+        <h1><span id="存储过程">存储过程</span></h1><p>内容引自<a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_Toc473120244">HANA SQLScript</a>第三部分储存过程-创建储存过程<del>是真长</del></p>
+<h2><span id="31create-procedure">3.1CREATE PROCEDURE</span></h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">PROCEDURE</span> [<span class="operator">&lt;</span>schema_name<span class="operator">&gt;</span>.]<span class="operator">&lt;</span>proc_name<span class="operator">&gt;</span> [(<span class="operator">&lt;</span>parameter_clause<span class="operator">&gt;</span>)] [<span class="keyword">LANGUAGE</span> <span class="operator">&lt;</span>lang<span class="operator">&gt;</span>] [<span class="keyword">SQL</span> SECURITY <span class="operator">&lt;</span>mode<span class="operator">&gt;</span>]</span><br><span class="line">[<span class="keyword">DEFAULT</span> SCHEMA <span class="operator">&lt;</span>default_schema_name<span class="operator">&gt;</span>][<span class="keyword">READS</span> <span class="keyword">SQL</span> DATA [<span class="keyword">WITH</span> <span class="keyword">RESULT</span> <span class="keyword">VIEW</span> ]] <span class="keyword">AS</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">BEGIN</span> [SEQUENTIAL EXECUTION]</span><br><span class="line"></span><br><span class="line"><span class="operator">&lt;</span>procedure_body<span class="operator">&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">END</span></span><br></pre></td></tr></table></figure>
+
+<p>The CREATE PROCEDURE statement creates a procedure using the specified programming language <lang>.</lang></p>
+<p>DeepL翻译：CREATE PROCEDURE语句使用指定的编程语言<lang>创建一个过程。</lang></p>
+<h3><span id="311">3.1.1   <parameter_clause></parameter_clause></span></h3><ol>
+<li><parameter_clause> ::= <parameter> [{,<parameter>}…]<ol>
+<li><parameter> ::= [<param_inout>] <param_name> <param_type><ol>
+<li><param_inout> ::= IN|OUT|INOUT    </param_inout></li>
+<li><param_type> ::= <sql_type> | <table_type> | <table_type_definition>              <ol>
+<li><sql_type> ::= DATE | TIME| TIMESTAMP | SECONDDATE | TINYINT | SMALLINT |INTEGER | BIGINT | DECIMAL | SMALLDECIMAL | REAL | DOUBLE<br>| VARCHAR | NVARCHAR | ALPHANUM | VARBINARY | CLOB | NCLOB | BLOB</sql_type></li>
+<li><table_type_defintion> ::= TABLE (<column_list_definition>)  <ol>
+<li><column_list_definition> ::= <column_elem>[{, <column_elem>}…]<ol>
+<li><column_elem> ::= <column_name> <data_type></data_type></column_name></column_elem></li>
+</ol>
+</column_elem></column_elem></column_list_definition></li>
+</ol>
+</column_list_definition></table_type_defintion></li>
+</ol>
+</table_type_definition></table_type></sql_type></param_type></li>
+</ol>
+</param_type></param_name></param_inout></parameter></li>
+</ol>
+</parameter></parameter></parameter_clause></li>
+</ol>
+<p>输入或输出参数类型可以是标准的基础数据类型与表类型，但INOUT参数只能是标准数据类型</p>
+<p><param_inout>：默认为IN</param_inout></p>
+<p><table_type_defintion>：参数类型如果是表类型，这个表类型可以是预先使用Create Type…As Table语句创建的类型对象，也可以在指定存储过程参数类型时才定义表类型</table_type_defintion></p>
+<h3><span id="312-language">3.1.2   LANGUAGE <lang></lang></span></h3><p><lang> ::= SQLSCRIPT | R</lang></p>
+<p>默认为: SQLSCRIPT。指定存储过程实现的程序语言</p>
+<h3><span id="313-sql-security">3.1.3   SQL SECURITY <mode></mode></span></h3><p><mode> ::= DEFINER | INVOKER</mode></p>
+<p>默认: DEFINER，指定存储过程的安全模式</p>
+<p>DEFINER：Specifies that the execution of the procedure is performed with the privileges of the definer of the procedure. </p>
+<p>DEFINER：只有存储过程的定义者才能执行？</p>
+<p>INVOKER：Specifies that the execution of the procedure is performed with the privileges of the invoker of the procedure.</p>
+<h3><span id="314-reads-sql-data">3.1.4   READS SQL DATA</span></h3><p>存储过程为只读的，不能包含DDL与DML（INSERT、UPDATE、DELETE）语句（即只能使用查询SQL与DCL语句），如果调用其他存储过程，则被调用过程也是只读的。设置参数会有特定的优化</p>
+<h3><span id="315-with-result-view">3.1.5   WITH RESULT VIEW <view_name></view_name></span></h3><p>Specifies the result view to be used as the output of a read-only procedure.将只读取存储过程的输出看做结果视图</p>
+<p>When a result view is defined for a procedure, it can be called by an SQL statement in the same way as a tableor view. See Example 2 - Using a result view below.定义了结果视图的存储过程，可以被其他查询SQL用来查询，此时存储过程就像一个表或视图</p>
+<h3><span id="316-sequential-execution">3.1.6   SEQUENTIAL EXECUTION</span></h3><p>This statement will force sequential execution of the procedure logic. No parallelism takes place.不允许存储过程并行执行</p>
+<h3><span id="317">3.1.7   <procedure_body></procedure_body></span></h3><p><procedure_body> ::= [<proc_decl_list>]              定义块<br>[<proc_handler_list>]            异常处理块<br><proc_stmt_list>                 存储体语句块</proc_stmt_list></proc_handler_list></proc_decl_list></procedure_body></p>
+<p>Defines the main body of the procedure according to the programming language selected.过程的主体由设定的程序语言来定义</p>
+<h4><span id="3171-定义变量">3.1.7.1    <proc_decl_list> 定义变量</proc_decl_list></span></h4><ol>
+<li><proc_decl_list> ::= <proc_decl> [{<proc_decl>}…]<ol>
+<li><proc_decl> ::= <strong>DECLARE</strong> {<proc_variable>|<proc_table_variable>|<proc_cursor>|<proc_condition>} ;<ol>
+<li><code>&lt;proc_variable&gt;::= &lt;variable_name_list&gt; [**CONSTANT**] &#123;&lt;sql_type&gt;|&lt;array_datatype&gt;&#125;[NOT NULL][&lt;proc_default&gt;]</code><ol>
+<li><variable_name_list> ::= <variable_name>[{, &lt;variable_name}…]</variable_name></variable_name_list></li>
+<li><array_datatype> ::= <sql_type> ARRAY [ = <array_constructor> ]<ol>
+<li><array_constructor> ::= ARRAY (<expression> [ { , <expression> }…] )</expression></expression></array_constructor></li>
+</ol>
+</array_constructor></sql_type></array_datatype></li>
+<li><proc_default> ::= (DEFAULT | ‘=’ ) <value>|<expression></expression></value></proc_default></li>
+</ol>
+</li>
+<li><proc_table_variable> ::= <variable_name_list> {<table_type_definition>|<table_type>}<ol>
+<li><variable_name_list> ::= <variable_name>[{, &lt;variable_name}…]</variable_name></variable_name_list></li>
+<li><table_type_definition> ::= TABLE(<column_list_elements>)<ol>
+<li><column_list_elements> ::= (<column_definition>[{,<column_definition>}…])</column_definition></column_definition></column_list_elements></li>
+</ol>
+</column_list_elements></table_type_definition></li>
+</ol>
+</table_type></table_type_definition></variable_name_list></proc_table_variable></li>
+<li><proc_cursor> ::= <strong>CURSOR</strong> <cursor_name> [ ( proc_cursor_param_list ) ] <strong>FOR</strong> <subquery> ;<ol>
+<li><proc_cursor_param_list> ::= <proc_cursor_param> [{,<proc_cursor_param>}…]<ol>
+<li><proc_cursor_param> ::= <param_name> <datatype></datatype></param_name></proc_cursor_param></li>
+</ol>
+</proc_cursor_param></proc_cursor_param></proc_cursor_param_list></li>
+</ol>
+</subquery></cursor_name></proc_cursor></li>
+<li><proc_condition> ::= <variable_name> CONDITION | <variable_name> CONDITION FOR <sql_error_code></sql_error_code></variable_name></variable_name></proc_condition></li>
+</ol>
+</proc_condition></proc_cursor></proc_table_variable></proc_variable></proc_decl></li>
+</ol>
+</proc_decl></proc_decl></proc_decl_list></li>
+</ol>
+<p><strong>CREATE</strong> <strong>procedure</strong> proc() <strong>LANGUAGE</strong> SQLSCRIPT <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>​    <strong>declare</strong> a <strong>int****default</strong> 2;–基本类型变量使用前一定要定义</p>
+<p>​    – 如果某个变量是表类型的变量，可以不用声明，直接就可以使用，这与基本类型变量是不一样的</p>
+<p>​    – ——基本类型变量使用前需要定义</p>
+<p>​    –declare tab_var1 table(a int,b int); 表类型变量可不定义就使用</p>
+<p>​    a := 1;</p>
+<p>​    – a = 1; 基本类型变量赋值时，等号前一定要加冒号，这与表类型变量恰好相反</p>
+<p>​    tab_var1 = <strong>select</strong> 1 <strong>as</strong> a,2 <strong>as</strong> b <strong>from</strong> dummy;</p>
+<p>​    –tab_var1 := select 1 as a,2 as b from dummy; 这是错误，表类型变量赋值时，只能使用等号，不能在等号前加冒号，这与基本类型变量赋值相反</p>
+<p><strong>END</strong>;</p>
+<h1><span id="暂时看到这了太长了下次再接着看"><strong>暂时看到这了：太长了下次再接着看</strong></span></h1><h4><span id="3172-异常处理">3.1.7.2    <proc_handler_list> 异常处理</proc_handler_list></span></h4><p><proc_handler_list> ::= <proc_handler> [{, <proc_handler>}…]                </proc_handler></proc_handler></proc_handler_list></p>
+<p><proc_handler>::= <a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_DECLARE_EXIT_HANDLER">DECLARE EXIT HANDLER FOR</a> <proc_condition_value_list> <proc_stmt> ;</proc_stmt></proc_condition_value_list></proc_handler></p>
+<p><proc_condition_value_list> ::= <proc_condition_value>{,<proc_condition_value>}…]</proc_condition_value></proc_condition_value></proc_condition_value_list></p>
+<p>​                        <proc_condition_value> ::= <a target="_blank" rel="noopener" href="https://www.cnblogs.com/jiangzhengjun/p/5040531.html#_Autonomous_Transaction">SQLEXCEPTION </a>| SQLWARNING | <sql_error_code> | <condition_name></condition_name></sql_error_code></proc_condition_value></p>
+<h4><span id="3173-过程体">3.1.7.3    <proc_stmt_list> 过程体</proc_stmt_list></span></h4><p><proc_stmt_list> ::= {<proc_stmt>}…</proc_stmt></proc_stmt_list></p>
+<p><proc_stmt> ::= <proc_block>| <proc_assign>| <proc_single_assign>| <proc_multi_assign>| <proc_if>| <proc_loop>| <proc_while>| <proc_for>|<br><proc_foreach>| <proc_exit>| <proc_continue>| <proc_signal>| <proc_resignal>| <proc_sql>| <proc_open>| <proc_fetch>| <proc_close>| <proc_call>| <proc_exec>| <proc_return></proc_return></proc_exec></proc_call></proc_close></proc_fetch></proc_open></proc_sql></proc_resignal></proc_signal></proc_continue></proc_exit></proc_foreach></proc_for></proc_while></proc_loop></proc_if></proc_multi_assign></proc_single_assign></proc_assign></proc_block></proc_stmt></p>
+<h5><span id="31731-内嵌块">3.1.7.3.1   <proc_block> 内嵌块</proc_block></span></h5><p><proc_block> ::= BEGIN <proc_block_option>[<proc_decl_list>][<proc_handler_list>] <proc_stmt_list> END ;</proc_stmt_list></proc_handler_list></proc_decl_list></proc_block_option></proc_block></p>
+<p><proc_block_option> ::= [SEQUENTIAL EXECUTION] [AUTONOMOUS TRANSACTION]| [AUTONOMOUS TRANSACTION] [SEQUENTIAL<br>                                 EXECUTION]</proc_block_option></p>
+<p>内嵌块， BEGIN 、 END是可以内嵌的</p>
+<h5><span id="31732-给变量赋值">3.1.7.3.2   <proc_assign> 给变量赋值</proc_assign></span></h5><p><proc_assign> ::= <variable_name> = { <expression> | <array_function> } ;| <variable_name> ‘[‘ <expression> ‘]’ = <expression> ;</expression></expression></variable_name></array_function></expression></variable_name></proc_assign></p>
+<p><array_function> = ARRAY_AGG ( <table_variable>.<column_name> [ ORDER BY <sort_spec_list> ] ) | CARDINALITY ( <array_variable_name>) | TRIM_ARRAY<br>( <array_variable_name> , <array_variable_name>) | ARRAY ( <array_variable_name_list> )</array_variable_name_list></array_variable_name></array_variable_name></array_variable_name></sort_spec_list></column_name></table_variable></array_function></p>
+<p>​                                        <array_variable_name_list> ::=&lt; array_variable_name &gt; [{, &lt; array_variable_name &gt;}…]  这个是自己 加的，是否正确？</array_variable_name_list></p>
+<p>Assign values to variables. An <expression> can be either a simple expression, such as a character, a date, or a number, or it can be a scalar function or a scalar user-defined function.将值赋给变量。<expression>可以是一个简单的表达式（如字符、日期、数字表达式），或者是标准函数，或用户自定义函数</expression></expression></p>
+<p>有关 ARRAY 、ARRAY_AGG、CARDINALITY、TRIM_ARRAY函数请参考后面数组函数</p>
+<h5><span id="31733-单个赋值">3.1.7.3.3   <proc_single_assign> 单个赋值</proc_single_assign></span></h5><p><proc_single_assign> ::= <variable_name> = <subquery> | <variable_name> = <proc_ce_call> | <variable_name> = <proc_apply_filter>| <variable_name> =<br><unnest_function></unnest_function></variable_name></proc_apply_filter></variable_name></proc_ce_call></variable_name></subquery></variable_name></proc_single_assign></p>
+<p><proc_ce_call> ::= TRACE ( <variable_name> ) ;| CE_LEFT_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ <expr_alias_vector>] ) ;<br> | CE_RIGHT_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ [ <expr_alias_vector>] ) ; | CE_FULL_OUTER_JOIN ( <table_variable> , <table_variable> ,’[‘ <expr_alias_comma_list> ‘]’ [ <expr_alias_vector>] ); | CE_JOIN ( <table_variable> , <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ [<expr_alias_vector>] ) ;| CE_UNION_ALL ( <table_variable> , <table_variable> ) ;| CE_COLUMN_TABLE ( <table_name> [ <expr_alias_vector>] ) ; | CE_JOIN_VIEW ( <table_name> [ <expr_alias_vector>] ) ;| CE_CALC_VIEW ( <table_name> [ <expr_alias_vector>] ) ; | CE_OLAP_VIEW ( <table_name> [ <expr_alias_vector>] ) ; | CE_PROJECTION ( <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ <opt_str_const> ) ; | CE_PROJECTION ( <table_variable> <opt_str_const> ) ; | CE_AGGREGATION ( <table_variable> , ‘[‘<agg_alias_comma_list> ‘]’ [ <expr_alias_vector>] ); | CE_CONVERSION ( <table_variable> , ‘[‘<proc_key_value_pair_comma_list> ‘]’ [ <expr_alias_vector>] ) ;| CE_VERTICAL_UNION ( <table_variable> , ‘[‘<expr_alias_comma_list> ‘]’ <vertical_union_param_pair_list> ) ;| CE_COMM2R ( <table_variable> , <int_const> , <str_const> ,<int_const> , <int_const> , <str_const> ) ;</str_const></int_const></int_const></str_const></int_const></table_variable></vertical_union_param_pair_list></expr_alias_comma_list></table_variable></expr_alias_vector></proc_key_value_pair_comma_list></table_variable></expr_alias_vector></agg_alias_comma_list></table_variable></opt_str_const></table_variable></opt_str_const></expr_alias_comma_list></table_variable></expr_alias_vector></table_name></expr_alias_vector></table_name></expr_alias_vector></table_name></expr_alias_vector></table_name></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></expr_alias_vector></expr_alias_comma_list></table_variable></table_variable></variable_name></proc_ce_call></p>
+<p><table_name> ::= [<schema_name>.]<identifier></identifier></schema_name></table_name></p>
+<p><proc_apply_filter> ::= APPLY_FILTER ( {<table_name> | <table_variable>},<variable_name> ) ;</variable_name></table_variable></table_name></proc_apply_filter></p>
+<p><unnest_function> ::= UNNEST ( <variable_name_list> ) [ WITH ORDINALITY ][<as_col_names>] ;</as_col_names></variable_name_list></unnest_function></p>
+<p><variable_name_list> ::= <variable_name> [{, <variable_name>}…]</variable_name></variable_name></variable_name_list></p>
+<p><as_col_names> ::= AS [table_name] ( <column_name_list> )</column_name_list></as_col_names></p>
+<p><column_name_list> ::= <column_name>[{, <column_name>}…]</column_name></column_name></column_name_list></p>
+<p>WITH ORDINALTIY：Appends an ordinal column to the return values.</p>
+<h5><span id="31734-多个赋值">3.1.7.3.4   <proc_multi_assign> 多个赋值</proc_multi_assign></span></h5><p><proc_multi_assign> ::= (<var_name_list>) = <function_expression></function_expression></var_name_list></proc_multi_assign></p>
+<p>Assign values to a list of variables with only one function evaluation. For example, <function_expression>must be a scalar user defined function and the number of elements in <var_name_list> must be equal to the number of output parameters of the scalar UDF（用户定义函数）.</var_name_list></function_expression></p>
+<p><function_expression>：用户自定义函数</function_expression></p>
+<p>函数的输入参数个数需与<var_name_list>中的参数个数相同</var_name_list></p>
+<h5><span id="31735">3.1.7.3.5   <proc_if></proc_if></span></h5><p><proc_if> ::= <strong>IF</strong> <condition> <strong>THEN</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> [<proc_elsif_list>] [<proc_else>] <strong>END IF</strong> ;</proc_else></proc_elsif_list></proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_if></p>
+<p><proc_elsif_list> ::= <strong>ELSEIF</strong> <condition> <strong>THEN</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list></proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_elsif_list></p>
+<p><proc_else> ::= <strong>ELSE</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>][<proc_handler_list>] <proc_stmt_list></proc_stmt_list></proc_handler_list></proc_decl_list></proc_else></p>
+<p>You use IF - THEN - ELSE IF to control execution flow with conditionals.</p>
+<h5><span id="31736">3.1.7.3.6   <proc_loop></proc_loop></span></h5><p><proc_loop> ::= <strong>LOOP</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> <strong>END LOOP</strong> ;</proc_stmt_list></proc_handler_list></proc_decl_list></proc_loop></p>
+<p>You use loop to repeatedly execute a set of statements.</p>
+<h5><span id="31737">3.1.7.3.7   <proc_while></proc_while></span></h5><p><proc_while> ::= <strong>WHILE</strong> <condition> <strong>DO</strong> [SEQUENTIAL EXECUTION][<proc_decl_list>] [<proc_handler_list>] <proc_stmt_list> <strong>END WHILE</strong> ;</proc_stmt_list></proc_handler_list></proc_decl_list></condition></proc_while></p>
+<p>You use while to repeatedly call a set of trigger statements while a condition is true.</p>
+<h5><span id="31738">3.1.7.3.8   <proc_for></proc_for></span></h5><p><proc_for> ::= <strong>FOR</strong> <column_name> <strong>IN</strong> [ REVERSE ] <expression> […] <expression> <strong>DO</strong> [SEQUENTIAL EXECUTION]</expression></expression></column_name></proc_for></p>
+<p>[<proc_decl_list>]</proc_decl_list></p>
+<p> [<proc_handler_list>]</proc_handler_list></p>
+<proc_stmt_list>
+
+<p><strong>END FOR</strong> ;</p>
+<p>You use FOR - IN loops to iterate over a set of data.</p>
+<h5><span id="31739">3.1.7.3.9   <proc_foreach></proc_foreach></span></h5><p><proc_foreach> ::= <strong>FOR</strong> <column_name> <strong>AS</strong> <column_name> [<open_param_list>] <strong>DO</strong> [SEQUENTIAL EXECUTION]</open_param_list></column_name></column_name></proc_foreach></p>
+<p>[<proc_decl_list>]</proc_decl_list></p>
+<p>[<proc_handler_list>]</proc_handler_list></p>
+<proc_stmt_list>
+
+<p>END <strong>FOR</strong> ;</p>
+<p><open_param_list> ::= ( <expression> [ { , <expression> }…] )</expression></expression></open_param_list></p>
+<p>You use FOR - EACH loops to iterate over all elements in a set of data.</p>
+<h5><span id="317310">3.1.7.3.10   <proc_exit></proc_exit></span></h5><p><proc_exit> ::= BREAK ;</proc_exit></p>
+<p>Terminates a loop.结束循环</p>
+<h5><span id="317311">3.1.7.3.11   <proc_continue></proc_continue></span></h5><p><proc_continue> ::= CONTINUE ;</proc_continue></p>
+<p>Skips a current loop iteration and continues with the next value.结束当前循环继续下一次循环</p>
+<h5><span id="317312">3.1.7.3.12   <proc_signal></proc_signal></span></h5><p><proc_signal> ::= SIGNAL <signal_value> [<set_signal_info>] ;</set_signal_info></signal_value></proc_signal></p>
+<p>You use the SIGNAL statement to explicitly raise an exception from within your trigger procedures.</p>
+<h5><span id="317313">3.1.7.3.13   <proc_resignal></proc_resignal></span></h5><p><proc_resignal> ::= RESIGNAL [<signal_value>] [<set_signal_info>] ;</set_signal_info></signal_value></proc_resignal></p>
+<p>You use the RESIGNAL statement to raise an exception on the action statement in an exception handler. If an error code is not specified, RESIGNAL will throw the caught exception.重新抛出异常？</p>
+<p><signal_value> ::= <signal_name> | <sql_error_code></sql_error_code></signal_name></signal_value></p>
+<p><signal_name> ::= <identifier></identifier></signal_name></p>
+<p><sql_error_code> ::= <unsigned_integer></unsigned_integer></sql_error_code></p>
+<p>You can SIGNAL or RESIGNAL a signal name or an SQL error code.</p>
+<p><set_signal_info> ::= SET MESSAGE_TEXT = ‘<message_string>‘</message_string></set_signal_info></p>
+<p><message_string> ::= <any_character></any_character></message_string></p>
+<p>You use SET MESSAGE_TEXT to deliver an error message to users when specified error is thrown during procedure execution.</p>
+<h5><span id="317314">3.1.7.3.14   <proc_sql></proc_sql></span></h5><p><proc_sql> ::= <subquery> | <select_into_stmt> | <insert_stmt> | <delete_stmt> | <update_stmt> | <replace_stmt> | <call_stmt> | <create_table> | <drop_table></drop_table></create_table></call_stmt></replace_stmt></update_stmt></delete_stmt></insert_stmt></select_into_stmt></subquery></proc_sql></p>
+<p><insert_stmt>, <delete_stmt>,<update_stmt>,<replace_stmt> and <upsert_stmt>请参考HANA SQL中INSERT , DELETE, UPDATE, REPLACE and UPSERT SQL语句</upsert_stmt></replace_stmt></update_stmt></delete_stmt></insert_stmt></p>
+<p><select_into_stmt> ::= SELECT <select_list> INTO <var_name_list> <from_clause> [<where_clause>] [<group_by_clause>] [<having_clause>] [{<set_operator><br><subquery>, … }] [<order_by_clause>] [<limit>] ;</limit></order_by_clause></subquery></set_operator></having_clause></group_by_clause></where_clause></from_clause></var_name_list></select_list></select_into_stmt></p>
+<p><var_name_list> ::= <var_name>[{, <var_name>}…]   <var_name>为基础类型变量</var_name></var_name></var_name></var_name_list></p>
+<h5><span id="317315">3.1.7.3.15   <proc_open>、<proc_fetch>、<proc_close></proc_close></proc_fetch></proc_open></span></h5><p><proc_open> ::= OPEN <cursor_name> [ <open_param_list>] ;</open_param_list></cursor_name></proc_open></p>
+<p><proc_fetch> ::= FETCH <cursor_name> INTO <column_name_list> ;</column_name_list></cursor_name></proc_fetch></p>
+<p><proc_close> ::= CLOSE <cursor_name> ;</cursor_name></proc_close></p>
+<p>Cursor operations</p>
+<h5><span id="317316">3.1.7.3.16   <proc_call></proc_call></span></h5><p><proc_call> ::= CALL <proc_name> (<param_list>) ;</param_list></proc_name></proc_call></p>
+<p>Calling a procedure</p>
+<h5><span id="317317">3.1.7.3.17   <proc_exec></proc_exec></span></h5><p><proc_exec> ::= {EXEC | EXECUTE IMMEDIATE} <proc_expr> ;</proc_expr></proc_exec></p>
+<p>You use EXEC to make dynamic SQL calls.</p>
+<h5><span id="317318">3.1.7.3.18   <proc_return></proc_return></span></h5><p><proc_return> ::= RETURN [<proc_expr>] ;</proc_expr></proc_return></p>
+<p>Return a value from a procedure.</p>
+<h3><span id="318-examples">3.1.8   Examples</span></h3><p>Example 1 - Creating an SQL Procedure</p>
+<p>You create an SQLScript procedure with the following definition.</p>
+<p><strong>CREATE<strong><strong>COLUMN</strong></strong>TABLE</strong>“SYSTEM”.”T” (“ID”<strong>INTEGER</strong> CS_INT,</p>
+<p>​     “NAME”<strong>VARCHAR</strong>(30),</p>
+<p>​     “PAYMENT”<strong>INTEGER</strong> CS_INT) <strong>UNLOAD****PRIORITY</strong> 5 AUTO <strong>MERGE</strong>;</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(1,’a’,10);</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(2,’b’,20);</p>
+<p><strong>insert****into</strong>“SYSTEM”.”T”<strong>values</strong>(3,’c’,30);</p>
+<p><strong>CREATE****PROCEDURE</strong> orchestrationProc <strong>LANGUAGE</strong> SQLSCRIPT <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>​    <strong>DECLARE</strong> v_id <strong>INT</strong>;</p>
+<p>​    <strong>DECLARE</strong> v_name <strong>VARCHAR</strong>(30);</p>
+<p>​    <strong>DECLARE</strong> v_pmnt <strong>INT</strong>;</p>
+<p>​    <strong>DECLARE</strong> v_msg <strong>VARCHAR</strong>(200);</p>
+<p>​    <strong>DECLARE****CURSOR</strong> c_cursor1 (p_payment <strong>INT</strong>) <strong>FOR****SELECT</strong> id, name, PAYMENT <strong>FROM</strong> t</p>
+<p>​           <strong>WHERE</strong> payment &gt;= p_payment <strong>ORDER****BY</strong> id <strong>ASC</strong>;</p>
+<p>​    <strong>OPEN</strong> c_cursor1(20);</p>
+<p>​    <strong>FETCH</strong> c_cursor1 <strong>INTO</strong> v_id, v_name, v_pmnt;</p>
+<p>​    v_msg := v_name || ‘ (id ‘ || v_id || ‘) earns ‘ || v_pmnt || ‘ $.’;</p>
+<p>​    <strong>select</strong> v_msg <strong>from</strong> dummy;</p>
+<p>​    <strong>CLOSE</strong> c_cursor1;</p>
+<p><strong>end</strong>;</p>
+<p>Example 2 - Using a result view</p>
+<p>创建带返回视图结果的存储过程：</p>
+<p><strong>CREATE****PROCEDURE</strong> ProcWithResultView(<strong>IN</strong> id <strong>INT</strong>, <strong>OUT</strong> o1 t)</p>
+<p><strong>LANGUAGE</strong> SQLSCRIPT</p>
+<p>READS <strong>SQL</strong> DATA <strong>WITH</strong> RESULT <strong>VIEW</strong> ProcView <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>o1 = <strong>SELECT</strong> * <strong>FROM</strong> t <strong>WHERE</strong> id = :id;</p>
+<p><strong>END</strong>;</p>
+<p>调用存储视图：</p>
+<p><strong>select</strong> * <strong>from</strong> ProcView <strong>with</strong> parameters (‘placeholder’ = (‘</p>
+<p>idid</p>
+<p>‘ ,’2’ ));</p>
+<p><strong>CREATE****PROCEDURE</strong> Proc_test(<strong>IN</strong> id <strong>INT</strong>,<strong>IN</strong> name <strong>varchar</strong>(3),<strong>OUT</strong> o1 “SYSTEM”.”T_COLUMN”)</p>
+<p><strong>LANGUAGE</strong> SQLSCRIPT</p>
+<p>READS <strong>SQL</strong> DATA <strong>WITH</strong> RESULT <strong>VIEW</strong> Proc_View <strong>AS</strong></p>
+<p><strong>BEGIN</strong></p>
+<p>outt = CE_COLUMN_TABLE(“SYSTEM”.”T_COLUMN”,[id,name,payment]);</p>
+<p>–注：过滤条件一定要使用单引号整体引起来；列名一定要使用双引号引起来；</p>
+<p>–如果是字符串，则要使用单引号引起来，因为外层有单引号，所以里面要使用两个单引号代表一个单引号</p>
+<p>–o1 = CE_PROJECTION(:outt,[id,name,payment],’”ID” = :id AND “NAME” = ‘’:name’’’);</p>
+<p>–上面这句等效于下面两句</p>
+<p>o1 = CE_PROJECTION(:outt,[id,name,payment],’”ID” = :id’);</p>
+<p>o1 = CE_PROJECTION(:o1,[id,name,payment],’”NAME” = ‘’:name’’’);</p>
+<p><strong>END</strong>;</p>
+<p><strong>select</strong> * <strong>from</strong> Proc_View <strong>with</strong> parameters (‘placeholder’ = (‘</p>
+<p>idid</p>
+<p>‘ ,’2’ ),’placeholder’ = (‘namename’ ,’b’ ));</p>
+<p>Note</p>
+<p>Procedures and result views produced by procedures are not connected from the security perspective and therefore do not inherit privileges from each other. The security aspects of each object must be handled separately. For example, you must grant the SELECT privilege on a result view and EXECUTE privilege on a connected procedure.</p>
+<img src="\img\7a1c08c79f3df8dccd0ae9edda11728b461028ed.gif" alt="7a1c08c79f3df8dccd0ae9edda11728b461028ed" style="zoom:100%;">
+
+
+
+</proc_stmt_list></proc_stmt_list>
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/24/Oracle%E4%B8%AD%E7%9A%84translate%E5%87%BD%E6%95%B0%E5%92%8Creplace%E5%87%BD%E6%95%B0%E7%9A%84%E7%94%A8%E6%B3%95/">
+                Oracle中的translate函数和replace函数的用法
+            </a>
+        </h2>
+    
+    <time>
+        3月 24, 2021
+    </time>
+    <section class="content">
+        <p>接触到此函数目的是为了判断某一单元格数据是在这里插入代码片否为纯数字，虽然实际来说TRANSLATE()实际不是为了判断数据格式。</p>
+<p><strong>translate函数语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">translate</span>(expr, from_string, to_string)</span><br></pre></td></tr></table></figure>
+
+<p>功能：在expr中寻找匹配from_string中符合的字符下标，随后根据下标去to_string中寻找对应的字符替换掉expr中对应下标的字符。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac&#x27;</span>,<span class="string">&#x27;ab2&#x27;</span>,<span class="string">&#x27;00&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return 0c</span></span><br></pre></td></tr></table></figure>
+
+<p>首先拿出ac中的a去匹配ab2中的字符，他会一个字符一个字符的进行判断。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a==a <span class="literal">true</span>      	<span class="comment">//a和ab2中的第一个字符比较，结果正确</span></span><br><span class="line">a==b <span class="literal">false</span>      <span class="comment">//a和ab2中的第二个字符比较，结果错误</span></span><br><span class="line">a==<span class="number">2</span> <span class="literal">false</span>      <span class="comment">//a和ab2中的第三个字符比较，结果错误</span></span><br></pre></td></tr></table></figure>
+
+<p>而其中的a匹配到了ab2中的字符，a在ab2中为第一位，所以也去00中寻找第一位进行替换，这时是0c。</p>
+<p>再去匹配第二位的c，而在ab2中没有找到，所以不进行替换。</p>
+<p>所以返回的结果为0c。</p>
+<p><strong>栗子ii：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;ac1&#x27;</span>,<span class="string">&#x27;abc123&#x27;</span>,<span class="string">&#x27;abc&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return ac</span></span><br></pre></td></tr></table></figure>
+
+<p>当to_string比from_string短时，会对多余的位数进行剔除</p>
+<p>这里中进行匹配到最后的1时，发现1在abc123中位置为第四位，而通过第四位去替换，去寻找abc的第四位时发现abc没有第四位，这时会将1剔除，返回的结果为ac。</p>
+<p>  需要注意的是，to_str不能是NULL或者’’，否则会返回空值。</p>
+<ol>
+<li>translate也不能用于CLOB，再说得简单一点，也就是<br>如果string中的字符如果在from_string中没有，那么返回时被保留</li>
+<li>如果string中的字符是from_string中的”额外字符”，那么返回时被删除</li>
+<li>如果string中的字符在from_string中找到，且在to_string中有相应位置的字符，那么返回时用to_string中的字符替换string中的字符</li>
+</ol>
+<p><strong>replace函数</strong></p>
+<p><strong>语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">REPLACE(expr, from_string,to_string)</span><br></pre></td></tr></table></figure>
+
+<p>功能：用法和上文中的translate的用法相同，唯一不同的是translate是会对expr中的字符一个一个和from_string进行匹配，而replace却类似于模糊查询like，会在expr中查找包含from_string的部分并且进行替换为to_string。</p>
+<p>expr：进行处理匹配替换的数据</p>
+<p>from_string：需要在expr中寻找匹配的字符</p>
+<p>to_string：替换在from_string中找到的expr中对应下标的字符</p>
+<p><strong>栗子：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;fk&#x27;</span> ,<span class="string">&#x27;j&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgsgswsgs</span></span><br><span class="line"><span class="keyword">select</span> REPLACE(<span class="string">&#x27;fgsgswsgs&#x27;</span>, <span class="string">&#x27;sg&#x27;</span> ,<span class="string">&#x27;eeerrrttt&#x27;</span>) 返回值 <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  fgeeerrrtttsweeerrrttts</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>分析：</strong></p>
+<p>第一个例子中由于’fgsgswsgs’中没有与’fk’匹配的字符串，</p>
+<p>​      故返回值仍然是’fgsgswsgs’；</p>
+<p>​      第二个例子中将’fgsgswsgs’中的字符串’sg’全部转换为’eeerrrttt’。</p>
+<p>总结：综上所述，replace与translate都是替代函数，</p>
+<p>​     只不过replace针对的是字符串，而translate针对的是单个字符。</p>
+<p><strong>和replace函数的区别</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">translate</span>(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return itmyhome@163.com</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">select</span> replace(<span class="string">&#x27;itmyhome#163%com&#x27;</span>, <span class="string">&#x27;#%&#x27;</span>, <span class="string">&#x27;@.&#x27;</span>) <span class="keyword">from</span> dual;</span><br><span class="line"><span class="comment">--return  itmyhome#163%com</span></span><br></pre></td></tr></table></figure>
+
+<p>上面的translate函数是将#替换为@，%替换为.</p>
+<p>而replace却没有实现此效果，是因为没有找到#%整体的组合</p>
+<p>部分引自</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u010104750/article/details/52388609">translate函数的用法</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jb51.net/article/128565.htm">Oracle中的translate函数和replace函数的用法详解</a></li>
+</ul>
+<img class="bigimg" src="\img\53186325_p0.jpg" alt="53186325_p0" style="zoom:100%;">
+
+<p><em><strong>戦いの前夜</strong></em></p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/22/python%E7%88%AC%E8%99%AB-%E7%88%AC%E5%8F%96steam%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE%EF%BC%88steam%E6%B8%B8%E6%88%8F%E5%9C%A8%E7%BA%BF%E4%BA%BA%E6%95%B0%EF%BC%89%EF%BC%88%E4%B8%80%EF%BC%89/">
+                python爬虫-爬取steam统计数据（steam游戏在线人数）
+            </a>
+        </h2>
+    
+    <time>
+        3月 22, 2021
+    </time>
+    <section class="content">
+        <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/Albert-Lee/p/6226699.html">转自[阿里波特]-[Python爬虫小白入门]</a></p>
+<h1><span id="前言">前言</span></h1><hr>
+<p>你是不是在为想收集数据而不知道如何收集而着急？</p>
+<p>你是不是在为想学习爬虫而找不到一个专门为小白写的教程而烦恼？</p>
+<p>Bingo! 你没有看错，这就是专门面向小白学习爬虫而写的！我会采用实例的方式，把每个部分都跟实际的例子结合起来帮助小伙伴儿们理解。最后再写几个实战的例子。</p>
+<p>我们使用Python来写爬虫，一方面因为Python是一个特别适合变成入门的语言，另一方面，Python也有很多爬虫相关的工具包，能够简单快速的开发出我们的小爬虫。<br>本系列采用Python3.5版本，毕竟2.7会慢慢退出历史舞台~</p>
+<p>那么，接下来，你得知道什么是爬虫、爬虫从哪里爬取数据的，以及，学习爬虫都要学习哪些东西。</p>
+<h1><span id="什么是爬虫">什么是爬虫</span></h1><hr>
+<p>来看看百度百科是如何定义的</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="http://baike.baidu.com/view/284853.htm">网络爬虫</a>（又被称为网页<a target="_blank" rel="noopener" href="http://baike.baidu.com/subview/8483/5395928.htm">蜘蛛</a>，网络机器人，在<a target="_blank" rel="noopener" href="http://baike.baidu.com/view/271451.htm">FOAF</a>社区中间，更经常的称为网页追逐者），是一种按照一定的规则，自动地抓取<a target="_blank" rel="noopener" href="http://baike.baidu.com/view/7833.htm">万维网</a>信息的程序或者脚本。另外一些不常使用的名字还有<a target="_blank" rel="noopener" href="http://baike.baidu.com/subview/3312/6169348.htm">蚂蚁</a>、自动索引、模拟程序或者<a target="_blank" rel="noopener" href="http://baike.baidu.com/view/2596.htm">蠕虫</a>。</p>
+</blockquote>
+<p>什么？没看懂？没关系，我来给你解释一下</p>
+<p>打开一个网页，里面有网页内容吧，想象一下，有个工具，可以把网页上的内容获取下来，存到你想要的地方，这个工具就是我们今天的主角：爬虫。</p>
+<p>这样是不是更清晰了呢？</p>
+<p>既然了解了爬虫是什么，那么爬虫是如何爬取数据的呢？</p>
+<h1><span id="爬虫是哪里爬取数据的">爬虫是哪里爬取数据的</span></h1><hr>
+<p>打开浏览器（强烈建议谷歌浏览器），找到浏览器地址栏，然后在里输入store.steampowered.com/stats/并回车，你会看到网页内容。</p>
+<img class="litimg" src="\img\QQ截图20210322162126.png" alt="QQ截图20210322162126" style="zoom:100%;">
+
+<p>摁下键盘上的F12打开开发调试工具,，然后点击元素。看到这些文字了吗？这才是网页最赤果果的样子。</p>
+<img class="litimg" src="\img\QQ截图20210322162407.png" alt="QQ截图20210322162407" style="zoom:100%;">
+
+<p>其实所有的网页都是HTML代码，只不过浏览器将这些代码解析成了上面的网页，我们的爬虫抓取的其实就是HTML代码中的文本。</p>
+<p>随后点击开发调试工具左上角的小鼠标图标，点击你想要爬取的数据，你就会在元素这一栏看到下面红框的地方，是你要爬取数据的本来模样。</p>
+<img class="litimg" src="\img\QQ截图20210322162801.png" alt="QQ截图20210322162801" style="zoom:100%;">
+
+<p>没错，我们的爬虫抓取的正是网页中的数据，你要知道你想要抓取什么数据，你的目标网站是什么，才可以把想法变成现实的。</p>
+<h1><span id="学习爬虫的必备知识">学习爬虫的必备知识</span></h1><hr>
+<p>大家要先对以下内容有一定的了解再来学习爬虫哦，磨刀不误砍柴工</p>
+<ul>
+<li>HTML<br>这个能够帮助你了解网页的结构，内容等。可以参考<a target="_blank" rel="noopener" href="http://www.w3school.com.cn/html/index.asp">W3School的教程</a>。</li>
+<li>Python<br>如果有编程基础的小伙伴儿，推荐看一个<a target="_blank" rel="noopener" href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000">廖雪峰的Python教程</a>就够了<br>没有编程基础的小伙伴，推荐看看视频教程（网易云课堂搜Python），然后再结合廖雪峰的教程，双管齐下。<br>其实知乎上总结的已经非常好了，我就不多唠叨了。<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/29138020">知乎-如何系统的自学Python</a></li>
+<li>TCP/IP协议，HTTP协议<br>这些知识能够让你了解在网络请求和网络传输上的基本原理，了解就行，能够帮助今后写爬虫的时候理解爬虫的逻辑。<br>廖雪峰Python教程里也有简单介绍，可以参考：<a target="_blank" rel="noopener" href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/0014320037768360d53e4e935ca4a1f96eed1c896ad1217000">TCP/IP简介</a>，<a target="_blank" rel="noopener" href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000/001432011939547478fd5482deb47b08716557cc99764e0000">HTTP协议</a><br>想更深入学习的小伙伴儿可以去网上多搜搜相关的书籍哦</li>
+</ul>
+<p>OK, 下一步就开始我们的实战啦</p>
+<h1><span id="requests-库的安装">requests 库的安装</span></h1><p>为什么要先说Requests库呢，因为这是个功能很强大的网络请求库，可以实现跟浏览器一样发送各种HTTP请求来获取网站的数据。网络上的模块、库、包指的都是同一种东西，所以后文中可能会在不同地方使用不同称谓，不要迷惑。</p>
+<p>直接使用Python3.5的小伙伴儿输入这个命令：<br><code>pip install requests</code></p>
+<p>如果你机器上存在多个Python版本，要给Python3.5的版本安装requests库，需要输入以下命令：<br><code>py -3 -m pip install requests</code></p>
+<p>好啦，requests库安装完毕，接下来我们会在实际例子中演示它的使用。想要深入了解requests模块的小伙伴也可以仔细阅读<a target="_blank" rel="noopener" href="http://docs.python-requests.org/en/master/api/">英文官方文档</a>，和<a target="_blank" rel="noopener" href="http://docs.python-requests.org/zh_CN/latest/user/quickstart.html">中文官方文档</a>，如果用到该文没有提到的功能，则查看文档即可。</p>
+<h1><span id="开工">开工</span></h1><hr>
+<p>新建一个文件，只要他的后缀为.py即可，名字选择你喜欢的就好。</p>
+<p>输入第一行代码来导入requests库：<br><code>import requests #导入requests库</code></p>
+<p>然后用它来获取咱们的目标网页：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">r = requests.get(<span class="string">&#x27;https://store.steampowered.com/stats/&#x27;</span>) <span class="comment">#像目标url地址发送get请求，返回一个response对象</span></span><br><span class="line">print(r.text) <span class="comment">#r.text是http response的网页HTML</span></span><br></pre></td></tr></table></figure>
+
+<p>之后再文件目录打开cmd页面，指令运行</p>
+<p><code>python xxxxx.py</code></p>
+<p>执行完之后，底部会出现输出结果：</p>
+<img class="litimg" src="\img\QQ截图20210322163703.png" alt="QQ截图20210322163703" style="zoom:70%;">
+
+<p>可以看到底部是获取到的网页内容。这就完成了爬虫的第一步，获取到了网页的HTML内容。</p>
+<p>这用到了requests库的get请求。其他请求使用也与之类似，但本文不进行阐述。</p>
+<p>我们刚才用requests库发送http请求获得了网页的HTML内容，那么应该如何从HTML中获得图片？</p>
+<p>BeautifulSoup库就此登场啦，赶快去来了解它的用法。</p>
+<p>刚才演示了如何使用requests模块向网站发送http请求，获取到网页的HTML数据。这篇来演示如何使用BeautifulSoup模块来从HTML文本中提取我们想要的数据。</p>
+<h1><span id="模块安装">模块安装</span></h1><hr>
+<p>BeautifulSoup 有多个版本，我们使用BeautifulSoup4。详细使用看<a target="_blank" rel="noopener" href="http://beautifulsoup.readthedocs.io/zh_CN/latest/">BeautifuSoup4官方文档</a>。<br>使用管理员权限打开cmd命令窗口，在窗口中输入下面的命令即可安装：<br><code>pip install beautifulsoup4</code></p>
+<p>然后我们安装lxml，这是一个解析器，BeautifulSoup可以使用它来解析HTML，然后提取内容。</p>
+<p><code>pip install lxml</code></p>
+<p>如果不安装lxml，则BeautifulSoup会使用Python内置的解析器对文档进行解析。之所以使用lxml，是因为它速度快。</p>
+<h1><span id="beautifulsoup-库的使用">BeautifulSoup 库的使用</span></h1><hr>
+<p>网上找到的几个官方文档：<a target="_blank" rel="noopener" href="http://beautifulsoup.readthedocs.io/zh_CN/latest/">BeautifulSoup4.4.0中文官方文档</a>，<a target="_blank" rel="noopener" href="https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/">BeautifulSoup4.2.0中文官方文档</a>。不同版本的用法差不多，几个常用的语法都一样。</p>
+<p>首先来看BeautifulSoup的对象种类，在使用的过程中就会了解你获取到的东西接下来应该如何操作。</p>
+<h2><span id="beautifulsoup对象的类型">BeautifulSoup对象的类型</span></h2><p>Beautiful Soup将复杂HTML文档转换成一个复杂的树形结构，每个节点都是Python对象。所有对象可以归纳为4种类型: Tag , NavigableString , BeautifulSoup , Comment 。下面我们分别看看这四种类型都是什么东西。</p>
+<h3><span id="tag">Tag</span></h3><p>这个就跟HTML或者XML（还能解析XML？是的，能！）中的标签是一样一样的。我们使用find()方法返回的类型就是这个（插一句：使用find-all()返回的是多个该对象的集合，是可以用for循环遍历的。）。返回标签之后，还可以对提取标签中的信息。</p>
+<h6><span id="提取标签的名字">提取标签的名字：</span></h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tag.name</span><br></pre></td></tr></table></figure>
+
+<h6><span id="提取标签的属性">提取标签的属性：</span></h6><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tag[<span class="string">&#x27;attribute&#x27;</span>]</span><br></pre></td></tr></table></figure>
+
+<h3><span id="navigablestring">NavigableString</span></h3><p>NavigableString就是标签中的文本内容（不包含标签）。获取方式如下：<br><code>tag.string</code><br>还是以上面那个例子，加上下面这行，然后执行：<br><code>print(&#39;NavigableString is：&#39;, find.string)</code></p>
+<h3><span id="beautifulsoup">BeautifulSoup</span></h3><p>BeautifulSoup对象表示一个文档的全部内容。支持遍历文档树和搜索文档树。</p>
+<h3><span id="comment">Comment</span></h3><p>这个对象其实就是HTML和XML中的注释。</p>
+<h3><span id="搜索文档树">搜索文档树</span></h3><p>最常用的当然是find()和find_all()啦，当然还有其他的。比如find_parent() 和 find_parents()、 find_next_sibling() 和 find_next_siblings() 、find_all_next() 和 find_next()、find_all_previous() 和 find_previous() 等等。<br>我们就看几个常用的，其余的如果用到就去看官方文档哦。</p>
+<ul>
+<li>find_all()<br>搜索当前tag的所有tag子节点，并判断是否符合过滤器的条件。返回值类型是bs4.element.ResultSet。<br>完整的语法：<br><code>find_all( name , attrs , recursive , string , **kwargs )</code></li>
+</ul>
+<h1><span id="继续之前的爬取">继续之前的爬取</span></h1><hr>
+<p>我们选中想要爬取的地方，查看html代码。发现游戏的在线人数都在span标签里，并且class都是currentServers，如下图。</p>
+<img class="litimg" src="\img\QQ截图20210322165150.png" alt="QQ截图20210322165150" style="zoom:70%;">
+
+<p>通过观察，发现在线人数都在span元素中的文本内容。下面，我们先获取到所有的含有数据的span标签，然后在循环获取span标签中的文本内容。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests <span class="comment">#导入requests 模块</span></span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup  <span class="comment">#导入BeautifulSoup 模块</span></span><br><span class="line"></span><br><span class="line">headers = &#123;<span class="string">&#x27;User-Agent&#x27;</span>: <span class="string">&#x27;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36&#x27;</span>&#125;  <span class="comment">#给请求指定一个请求头来模拟chrome浏览器</span></span><br><span class="line">web_url = <span class="string">&#x27;https://store.steampowered.com/stats/&#x27;</span></span><br><span class="line">r = requests.get(web_url, headers=headers) <span class="comment">#像目标url地址发送get请求，返回一个response对象</span></span><br><span class="line">all_a = BeautifulSoup(r.text, <span class="string">&#x27;lxml&#x27;</span>).find_all(<span class="string">&#x27;span&#x27;</span>, class_=<span class="string">&#x27;currentServers&#x27;</span>)  <span class="comment">#获取网页中的class为currentServers的所有span标签</span></span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> all_a:</span><br><span class="line">  print(a.string) <span class="comment">#循环获取a标签中的style</span></span><br></pre></td></tr></table></figure>
+
+<p>这里的find_all(‘span’, class_=’currentServers’)是找到所有class为currentServers的span标签，返回的是一个list，所以可以用for循环获取每个span标签。</p>
+<p>力荐<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Albert-Lee/p/6226699.html">转自[阿里波特]-[Python爬虫小白入门]</a>OvO</p>
+<img class="litimg" src="\img\bbe600fa828ba61e7b3276565634970a314e593a.gif" alt="bbe600fa828ba61e7b3276565634970a314e593a" style="zoom:100%;">
+
+<p><em><strong><code>Excalibur！！！</code></strong></em></p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/python/" rel="tag">python</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/17/SAP-Data-Services-Designer/">
+                SAP Data Services Designer
+            </a>
+        </h2>
+    
+    <time>
+        3月 17, 2021
+    </time>
+    <section class="content">
+        <h5><span id="sap-data-services-designer工具介绍和基础使用抽表">SAP DATA SERVICES DESIGNER工具介绍和基础使用（抽表）</span></h5><p>接下来简称DS</p>
+<p>SAP BusinessObjects Data Service 是通过SAP HANA认证的ETL工具。采用数据批量处理的方式，定期执行后台作业，将数据从多个业务系统中抽取出来，并进行必要的处理（转换，合并，过滤，清晰），然后在加载到HANA数据库中。</p>
+<p>DS组件之间的关系：</p>
+<img src="\img\20200811145254657.png" alt="20200811145254657" style="zoom:60%;">
+
+<table>
+<thead>
+<tr>
+<th align="left">Designer</th>
+<th>用户可在此界面1. 创建、测试以及执行填充数据仓库的作业<br>2. 创建并通过拖拽的方法连接对象形成流程图<br>3. 在流程图中打开编辑修改对象的配置<br>4. 定义数据映像、转换以及逻辑控制<br>5. 通过将对象组合到工作流（作业执行定义）和数据流（数据转换定义）中来创建应用程序</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Job Server</td>
+<td>启动数据服务处理的引擎以及数据服务套件与其他组件的接口的引擎的应用程序。</td>
+</tr>
+<tr>
+<td align="left">Engine</td>
+<td>执行在Designer中定义的各个作业，以有效地完成已定义的任务。</td>
+</tr>
+<tr>
+<td align="left">Repository</td>
+<td>存储Designer预定义系统对象和用户定义对象（包括源和目标元数据以及转换规则）的数据库。 创建一个本地存储库，然后创建一个中央存储库，以与其他用户共享对象并进行版本控制。</td>
+</tr>
+<tr>
+<td align="left">Access Server</td>
+<td>在Web应用程序与数据服务作业服务器和引擎之间传递消息。 提供用于请求响应处理的可靠且可扩展的接口。</td>
+</tr>
+<tr>
+<td align="left">Administrator</td>
+<td>提供以下基于浏览器的数据服务资源管理的Web管理员：<br>1. 计划，监视和执行批处理作业<br>2. 配置，启动和停止实时服务<br>3. 配置作业服务器，访问服务器和存储库使用情况<br>4. 配置和管理适配器<br>5. 管理用户<br>6. 通过Web服务发布批处理作业和实时服务</td>
+</tr>
+</tbody></table>
+<h6><span id="用户界面介绍">用户界面介绍</span></h6><img class="bigimg" src="\img\QQ截图20210318111958.png" alt="QQ截图20210318111958" style="zoom:100%;">
+
+<p>Projects(项目)：项目包含作业，工作流和数据流等子对象，项目是Data Services的最高级对象，主要用于组织管理子对象，一个项目通常包含多个作业</p>
+<p>Job(作业)：可独立安排执行的最小工作单元。 作业由工作流和数据流组成，这些工作流和数据流按顺序和指定方式处理流程。</p>
+<p>Work flows(工作流)：工作流指定处理数据流的顺序。将下级数据流安排在工作流下，以便一个数据流的输出准备好输入到预期数据流。</p>
+<p>Data flows(数据流)：数据流是将源数据转换为目标数据的过程。数据流按在工作流中排列的顺序处理数据。数据流定义了数据服务需要完成的基本任务。 基本任务是将数据从一个或多个源移动到一个或多个目标表或文件。通过标识提取数据的源，数据应进行的转换以及目标来定义数据流。</p>
+<h6><span id="data-services对象列表">Data Services对象列表</span></h6><img src="\img\20200811154500211.png" alt="20200811154500211" style="zoom:70%;">
+
+<h6><span id="对象层级以及从属关系">对象层级以及从属关系</span></h6><img src="\img\20200811154704891.png" alt="20200811154704891" style="zoom:100%;">
+
+<h5><span id="ds数据加载方式">DS数据加载方式</span></h5><p>将演示最基本的从其他系统中抽取数据到SAP HANA中（多图预警）</p>
+<p>*注：<del>如何创建datastores连接其他系统和数据库此文不进行阐述</del>*，下面的演示为全量抽取，将一次将表中的全部数据抽取到你想要的数据库里。</p>
+<p>根据对象层级以及从属关系来创建</p>
+<p><em>也可以直接在local object library点击不同的对象独立创建<del>（但不推荐，因为不好管理也不好找）</del></em></p>
+<p>首先创建project，在local object library界面中选择project，然后空白处选择New</p>
+<img src="\img\QQ截图20210318164049.png" alt="QQ截图20210318164049" style="zoom:50%;">
+
+<p>起一个你喜欢的名字（project name）*<del>见名知意，最好再加上注释🙏</del>*，然后点击create（创建）</p>
+<img src="\img\QQ截图20210318164227.png" alt="QQ截图20210318164227" style="zoom:50%;">
+
+<p>之后再local object library中右击刚刚创建的project，点击open（打开）</p>
+<img src="\img\QQ截图20210318164346.png" alt="QQ截图20210318164346" style="zoom:50%;">
+
+<p>它就会在project Area上显示树状图</p>
+<img src="\img\QQ截图20210318170041.png" alt="QQ截图20210318170041" style="zoom:50%;">
+
+<p>之后右击空白位置或者project选择new batch job（新建批量作业）</p>
+<img src="\img\QQ截图20210318170601.png" alt="QQ截图20210318170601" style="zoom:50%;">
+
+<p>通常名字和要进行的业务相关 <del>见名知意</del>（这就是我们需要执行的作业，可以手动或者定时执行</p>
+<img src="\img\QQ截图20210318170649.png" alt="QQ截图20210318170649" style="zoom:50%;">
+
+<p>之后双击就应该会在右侧工作区打开，应该是一片空白，空无一物，这时我们就需要点击右侧工具区的Dataflow（数据流），然后到空白区域左键单击新建一个df，名字一般应和你要抽取的表同名，比如说：DF_XXXX</p>
+<img src="\img\QQ截图20210318171011.png" alt="QQ截图20210318171011" style="zoom:50%;">
+
+<p>之后鼠标双击你刚才新建的df进入df的工作区，准备开始抽取表数据</p>
+<h6><span id="流程">流程：</span></h6><ol>
+<li>在你要抽取数据的datastore中右键tables—import by name创建source表（源数据表，也就是你要抽取的表）。</li>
+<li>鼠标左键拖拽到df工作区，选择Make Source(作为源表)  。</li>
+<li>然后在右侧工具区拖拽query对数据进行处理（<del>也可以跳过query，不进行输入处理，直接将源表和目标表连线</del></li>
+<li>从右侧工具区拖拽template(临时表)到df工具区，填上你想要抽到哪个datastore和schema。</li>
+<li>保存执行</li>
+</ol>
+<h6><span id="示例">示例：</span></h6><p>步骤一：</p>
+<p>在datastore导入表</p>
+<img src="\img\QQ截图20210319085415.png" alt="QQ截图20210319085415" style="zoom:50%;">
+
+<p>填写表的信息，之后点击import导入</p>
+<img src="\img\QQ截图20210319085849.png" alt="QQ截图20210319085849" style="zoom:50%;">
+
+<p>步骤二：</p>
+<p>鼠标拖拽刚刚导入的表到右侧ds工作区，选择make source作为源表</p>
+<img src="\img\QQ截图20210319090259.png" alt="QQ截图20210319090259" style="zoom:50%;">
+
+<p>最后是这个样子的，中间图示的表格深蓝色而且清晰，绿色箭头向右</p>
+<img src="\img\QQ截图20210319090340.png" alt="QQ截图20210319090340" style="zoom:50%;">
+
+<p>步骤三：</p>
+<p>点击工具区中的query，鼠标图标应该会发生改变，随后点击df的工作区创建一个query</p>
+<img src="\img\QQ截图20210319090825.png" alt="QQ截图20210319090825" style="zoom:50%;">
+
+<p>之后通过鼠标悬浮到源表右侧的小点，鼠标图标应该会变换成一个拿着粉笔的手，随后左键单击拖拽就应该会出现连线，将线连接到query控件左侧的三角形</p>
+<img src="\img\QQ截图20210319091413.png" alt="QQ截图20210319091413" style="zoom:50%;">
+
+<p>随后双击进入query，对数据进行处理</p>
+<img src="\img\QQ截图20210319091622.png" alt="QQ截图20210319091622" style="zoom: 50%;">
+
+<p>步骤四：</p>
+<p>也是通过左键工具区中的template（临时表）到ds工作区，填写要抽到库里的表名和schema，表名应和要抽取的表同名</p>
+<img src="\img\QQ截图20210319092829.png" alt="QQ截图20210319092829" style="zoom: 50%;">
+
+<p>随后通过query连线到临时表，最后应该是这样子的</p>
+<img src="\img\QQ截图20210319093220.png" alt="QQ截图20210319093220" style="zoom:50%;">
+
+<p>双击右侧的临时表，点击options，拖到最下方吧这一行改为YES！<del>不然字符串的数据抽取可能出现问题</del></p>
+<img src="\img\QQ截图20210319093541.png" alt="QQ截图20210319093541" style="zoom:33%;">
+
+<img src="\img\QQ截图20210319093607.png" alt="QQ截图20210319093607" style="zoom:50%;">
+
+<p>步骤五：</p>
+<p>到job页面或者在左侧project area右键job选运行。如果没保存会提示让你保存，随后执行，点ok</p>
+<img src="\img\QQ截图20210319094058.png" alt="QQ截图20210319094058" style="zoom:50%;">
+
+<img src="\img\QQ截图20210319094206.png" alt="QQ截图20210319094206" style="zoom:50%;">
+
+<p>保存执行！</p>
+<p>本文中展示数据皆为示例，不太具有实际参考价值，但步骤相同，推荐举一反三。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/JanoZhuo/article/details/107934029">部分引自SAP Data Services Designer - Ⅰ（User interface and Setting）</a></p>
+<img class="litimg" src="\img\fdacab61d58425e368f30729feb2d2c8.jpg" alt="fdacab61d58425e368f30729feb2d2c8" style="zoom:50%;">
+
+<p>この何もないの世界に、お前わ何が欲しいのが</p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/ds/" rel="tag">ds</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/15/%E5%BC%80%E7%AA%97%E5%87%BD%E6%95%B0/">
+                开窗函数
+            </a>
+        </h2>
+    
+    <time>
+        3月 15, 2021
+    </time>
+    <section class="content">
+        <h5><span id="排序函数">排序函数</span></h5><p>开窗函数over()，包含三个分析子句:分组(partition by), 排序(order by), 窗口(rows) ，他们的使用形式如下：over(partition by 排序字段 order by 分区字段 rows between 开窗规则)。</p>
+<p>开窗函数<br>   Oracle从8.1.6开始提供分析函数，分析函数用于计算基于组的某种聚合值，它和聚合函数的不同之处是：对于每个组返回多行，而聚合函数对于每个组只返回一行。</p>
+<p>   开窗函数指定了分析函数工作的数据窗口大小，这个数据窗口大小可能会随着行的变化而变化，</p>
+<p>示例数据：</p>
+<img src="\img\QQ截图20210312144133.png" alt="QQ截图20210312144133" style="zoom:80%;">
+
+<p>第一大类：<strong>聚合开窗函数</strong>====》聚合函数(列) OVER (选项)</p>
+<p>：sum(),count()等都可以拼接</p>
+<p>第二大类：<strong>排序开窗函数</strong>====》排序函数(列) OVER(选项)</p>
+<p>：rank(),row_number()等需要和over一起使用排序函数</p>
+<p><em><strong>不限于此，很多函数都可以配合over（），在这里不做过多介绍</strong></em></p>
+<p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--select 函数名()over(partition by 需要分区的列名 order by 想排序的列名 rows/range </span></span><br><span class="line"> <span class="comment">--unbounded preceding and unbouned following针对当前所有记录的前一条、后一条记录，也就是表中的所有记录</span></span><br><span class="line">            <span class="comment">--unbounded：不受控制的，无限的</span></span><br><span class="line">            <span class="comment">--preceding：在...之前</span></span><br><span class="line">            <span class="comment">--following：在...之后</span></span><br><span class="line">          <span class="comment">--  BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) from 表名</span></span><br><span class="line"><span class="comment">--such as </span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>,<span class="built_in">sum</span>(sage)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> sage <span class="keyword">rows</span> <span class="keyword">between</span> UNBOUNDED preceding <span class="keyword">and</span> UNBOUNDED following)</span><br><span class="line"><span class="keyword">from</span> &quot;student&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>分区（partition by ）：</strong></p>
+<p>功能与group by几乎相同，但group by对于聚合的分组只显示一行数据，并且select后的字段如果其中一个被group by，那么其他字段要么是聚合函数要么也被group by分组聚合。</p>
+<p>栗子：分别求男女同学年龄总和</p>
+<img src="\img\QQ截图20210315093653.png" alt="QQ截图20210315093653" style="zoom:80%;">
+
+<p>而聚合函数搭配over（）可以一组返回多行数据，而且其他字段不需要为被分组或被聚合。</p>
+<p><strong>排序（order by）：</strong></p>
+<p>栗子：男女分别根据年龄降序排列</p>
+<img src="\img\QQ截图20210315100337.png" alt="QQ截图20210315100337" style="zoom:80%;">
+
+
+
+<p>没什么需要多说的，这里使用了rank()函数排序，partition by相当于group by，order by还是原意。</p>
+<p>注：关于rank()等排序函数请移步其他文章，本文不做说明</p>
+<p>栗子ii：男女按照年龄降序分别求出年龄累计</p>
+<img src="\img\QQ截图20210315135813.png" alt="QQ截图20210315135813" style="zoom:80%;">
+
+<p>这里发生了变化，当使用sum()或count()配合over使用，并且使用partition by和order by，就会根据排序进行逐渐的累加或者求和，可以用于计算各个月份随时间累计数等情况</p>
+<p><strong>窗口（rows/range）注：rows可以使用，但是range没研究明白报错：</strong></p>
+<p>在Over子句中，使用Rows 或Range 进一步限制分区的数据行，在使用时，必须注意：</p>
+<p>必需条件：如果使用Rows 或 Range必须跟在Order by 子句之后，对排序的结果进行限制；<br>Rows：使用固定的行数来限制分区中的数据行数量；The ROWS clause limits the rows within a partition by specifying a fixed number of rows preceding or following the current row.<br>Range：使用Value的范围来限制分区中的数据行数量，排序列的重复值，被认为是一个值；The RANGE clause logically limits the rows within a partition by specifying a range of values with respect to the value in the current row.<br>在分区中，如果排序行不存在重复值，Rows和Range返回的结果是相同的；如果排序行存储在重复值，Rows和Range返回的结果可能不同；<br>Range子句只能从分区的开始或结尾到当前行开始计算，不能使用 <uint_number> PRECEDING 和<uint_number>  FOLLOWING；<br>使用在Rows 和 Range子句中的特殊关键字：</uint_number></uint_number></p>
+<p>UNBOUNDED PRECEDING：指定分区的第一行<br>UNBOUNDED FOLLOWING：指定分区的最后一行<br>CURRENT ROW：指定分区的当前数据行<br><uint_number> PRECEDING：在分区中，指定当前行之前的数据行数量，UINT_Number是&gt;=0的整数<br><uint_number> FOLLOWING：在分区中，指定当前行之后的数据行数量，UINT_Number是&gt;=0的整数</uint_number></uint_number></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--每行数据都会被开窗影响，每行数据都会根据开窗的行数来向上或向下进行函数的操作。</span></span><br><span class="line"><span class="comment">--当上面没有行时上面的行不做影响，下面也没有行时同上。</span></span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>,<span class="built_in">sum</span>(sage)<span class="keyword">over</span>(<span class="keyword">order</span> <span class="keyword">by</span> sage <span class="keyword">rows</span> <span class="keyword">between</span> 前多少行 preceding <span class="keyword">and</span> 后多少行 following)</span><br><span class="line"><span class="keyword">from</span> &quot;student&quot;</span><br></pre></td></tr></table></figure>
+
+<p>栗子：对分区中的连续两行计算加和，将每行和下一行进行相加</p>
+<img src="\img\QQ截图20210315150441.png" alt="QQ截图20210315150441" style="zoom:80%;">
+
+<p>第一行=第一行sage+第二行sage，第二行=第二行sage+第三行sage………..以此类推</p>
+<p>图中第五行数据和第十行数据都是分区中的最后一行数据，没有下面的行进行相加所以是原数</p>
+<p>–栗子ii：对分区中的当前行向下计算加和，将每行到当前分区最底下的进行相加</p>
+<p>Could not execute ‘select *,sum(sage)over(order by sage range between unbounded preceding and unbounded following) …’<br>SAP DBTech JDBC: [7]: feature not supported: Window frame specification of RANGE not allowed for this window function: line 1 col 10 (at pos 9)</p>
+<img src="\img\202005241421367251716257711.500x0.jpg.webp" alt="202005241421367251716257711.500x0.jpg.webp">
+
+<h1><span id="to-be-continued多半是鸽了"><strong><u><em>to</em> <em>be</em> continued（多半是鸽了😜 </u></strong></span></h1>
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/12/%E6%8E%92%E5%BA%8F%E5%87%BD%E6%95%B0/">
+                排序函数
+            </a>
+        </h2>
+    
+    <time>
+        3月 12, 2021
+    </time>
+    <section class="content">
+        <h5><span id="排序函数">排序函数：</span></h5><p>  排序函数的作用是基于一个结果集返回一个排序值。排序值就是一个数字，这个数字是典型的以1开始且自增长为1的行值。由排序函数来决定排序值。可以使唯一的对于当前结果集，或者某些行数据有相同的排序值。接下来介绍不同的排序函数以及如何使用这些函数。</p>
+<p>示例数据：</p>
+<img src="\img\QQ截图20210312144133.png" alt="QQ截图20210312144133" style="zoom:80%;">
+
+<p>语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--select 函数名()over(order by 想排序的列名) from 表名</span></span><br><span class="line"><span class="comment">--such as </span></span><br><span class="line"><span class="keyword">select</span> <span class="built_in">rank</span>()<span class="keyword">over</span>(<span class="keyword">partition</span> <span class="keyword">by</span> ssex <span class="keyword">order</span> <span class="keyword">by</span> sage <span class="keyword">desc</span>) </span><br><span class="line"><span class="keyword">from</span> &quot;student&quot;</span><br></pre></td></tr></table></figure>
+
+<p><em>注：over（）开窗函数用法在此文中不进行介绍</em></p>
+<h6><span id="row_number"><strong>ROW_NUMBER()</strong></span></h6><p><strong>定义</strong>：ROW_NUMBER()函数作用就是将select查询到的数据进行排序，每一条数据加一个序号，他不能用做于学生年龄的排名，一般多用于分页查询，因为在遇到相同年龄时序号依然会继续自增，而非并列的序号。</p>
+<p><strong>栗子：</strong>根据年龄降序排列学生</p>
+<img src="\img\QQ截图20210312145034.png" alt="QQ截图20210312145034" style="zoom:80%;">
+
+<p>ROW_NUMBER（）当遇到相同年龄时序号依然会自增</p>
+<h6><span id="rank"><strong>RANK()</strong></span></h6><p><strong>定义：</strong>RANK()函数，顾名思义排名函数，可以对某一个字段进行排名，与ROW_NUMBER()不同，当存在相同年龄的学生时，ROW_NUMBER()会继续进行排序，他们的序号不相同，而Rank()则不一样，当出现相同的年龄时，他们的排名是一样的，并且会跳过已经占用的序号。</p>
+<p><strong>栗子：</strong>根据年龄降序排列学生</p>
+<img src="\img\QQ截图20210312145927.png" alt="QQ截图20210312145927" style="zoom:80%;">
+
+<p><em>这里第五条数据突然从2号序号跳跃到5号序号，是因为上面已经有四位同学被排序过，按照已经被排序的数据条数就是5号</em></p>
+<p>RANK（）当遇到相同年龄时序号时序号不会自增，而是和相同年龄时的序号相同。同时当再次向下排序遇到不同年龄时，会根据已进行排序的条数来跳跃序号。</p>
+<h6><span id="dense_rank"><strong>DENSE_RANK()</strong></span></h6><p><strong>定义</strong>：DENSE_RANK()函数也是排名函数，和RANK()功能相似，也是对字段进行排名，那它和RANK()到底有什么不同那？</p>
+<p><strong>栗子：</strong>根据年龄降序排列学生</p>
+<img src="\img\QQ截图20210312150624.png" alt="QQ截图20210312150624" style="zoom:80%;">
+
+<p>dense_rank函数的功能与rank函数类似，dense_rank函数在生成序号时是连续的，而rank函数生成的序号有可能不连续。dense_rank函数出现相同排名时，将不跳过相同排名号，rank值紧接上一次的rank值。在各个分组内，rank()是跳跃排序，有两个第一名时接下来就是第四名，dense_rank()是连续排序，有两个第一名时仍然跟着第二名。</p>
+<p><strong>NTILE()</strong></p>
+<p><strong>定义</strong>：ntile函数可以对序号进行分组处理，将有序分区中的行分发到指定数目的组中。 各个组有编号，编号从一开始。 对于每一个行，ntile 将返回此行所属的组的编号。这就相当于将查询出来的记录集放到指定长度的数组中，每一个数组元素存放一定数量的记录。ntile函数为每条记录生成的序号就是这条记录所有的数组元素的索引（从1开始）。也可以将每一个分配记录的数组元素称为“桶”。ntile函数有一个参数，用来指定桶数。</p>
+<img src="\img\QQ截图20210312160137.png" alt="QQ截图20210312160137" style="zoom:80%;">
+
+<p><em>将年龄降序并且平均分为四个桶（区）</em></p>
+<p>　　ntile函数的分组依据（约定）：</p>
+<p>　　<strong>1、每组的记录数不能大于它上一组的记录数，即编号小的桶放的记录数不能小于编号大的桶。就是说，第1组中的记录数只能大于等于第2组及以后各组中的记录数。</strong></p>
+<p>　　<strong>2、所有组中的记录数要么都相同，要么从某一个记录较少的组（命名为X）开始后面所有组的记录数都与该组（X组）的记录数相同。也就是说，如果有个组，前三组的记录数都是9，而第四组的记录数是8，那么第五组和第六组的记录数也必须是8。</strong></p>
+<p>以上为四个排序函数的用法，最后一个可能不算排序，而是根据排序内容分桶，应用场景一般不为排序。而这些排序函数都依赖于over分窗函数，可以看到排序都是在它之中进行的，同时它也可以使用partition by排序的同时分组，类似于group by，也可以根据row和range进行开窗，但这里不过多解释。！</p>
+<p><strong>总结：</strong></p>
+<p>在使用排名函数的时候需要注意以下三点：</p>
+<p>　　1、排名函数必须有 OVER 子句。</p>
+<p>　　2、排名函数必须有包含 ORDER BY 的 OVER 子句。</p>
+<p>　　3、分组内从1开始排序。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/52XF/p/4209211.html">引自[Sql 四大排名函数（ROW_NUMBER、RANK、DENSE_RANK、NTILE）简介]</a></p>
+<img src="\img\20200429013947.52ff80ba8cacf5780b8e9e93e02e02ef.png" alt="20200429013947.52ff80ba8cacf5780b8e9e93e02e02ef" style="zoom:33%;">
+
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/sql/" rel="tag">sql</a><a class="tag-none-link" href="/tags/study/" rel="tag">study</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/08/wHo-i-M-I/">
+                wHo i&#39;M I
+            </a>
+        </h2>
+    
+    <time>
+        3月 8, 2021
+    </time>
+    <section class="content">
+        <p>我的生活是一个圆，是一个泡沫，而我在泡沫的中间。</p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/life/" rel="tag">life</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+    
+
+<article class="post ">
+
+    
+        <h2 class="title">
+            <a href="/2021/03/05/hello-world/">
+                Hello World
+            </a>
+        </h2>
+    
+    <time>
+        3月 5, 2021
+    </time>
+    <section class="content">
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2><span id="quick-start">Quick Start</span></h2><h3><span id="create-a-new-post">Create a new post</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3><span id="run-server">Run server</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3><span id="generate-static-files">Generate static files</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+
+        
+
+        
+            <div class="tags">
+                <a class="tag-none-link" href="/tags/life/" rel="tag">life</a>
+            </div>
+        
+
+    </section>
+</article>
+
+
+  
+</section>
+
+
+        <script>setLoadingBarProgress(60);</script>
+    </main>
+
+    <footer id="footer" class="clearfix">
+
+    
+
+    <div class="social-wrapper">
+        
+            
+                <a href="https://github.com/artchen" class="social github"
+                   target="_blank" rel="external">
+                    <span class="icon icon-github"></span>
+                </a>
+            
+                <a href="/atom.xml" class="social rss"
+                   target="_blank" rel="external">
+                    <span class="icon icon-rss"></span>
+                </a>
+            
+        
+    </div>
+
+    <div class="theme-by">Theme <span class="codename">Memory</span> designed by <a href="https://artifact.me/"
+                                                                                    target="_blank">Art Chen</a>.
+    </div>
+    <div>&copy; <a href="/">宅谈</a></div>
+
+</footer>
+
+
+    <script>setLoadingBarProgress(80);</script>
+    <div class="overlay"></div>
+</div>
+
+<div class="site-sidebar" id="site-sidebar">
+
+    
+
+    <div class="sidebar-switch clearfix "
+         style="display: none">
+        <a class="dark-btn active" data-toggle="toc">
+            <span class="icon icon-list"></span>
+            <span class="text">Index</span>
+        </a>
+        <a class="dark-btn" data-toggle="bio">
+            <span class="icon icon-person"></span>
+            <span class="text">Bio</span>
+        </a>
+    </div>
+
+    <div class="site-toc "
+         style="display: none">
+        
+            <div class="no-index">No Index</div>
+        
+    </div>
+
+    <div class="site-bio show"
+         style="display: block">
+
+        <div class="about-me clearfix">
+            <div class="avatar">
+                <img src="/img/avatar.png"/>
+            </div>
+            <div class="info">
+                <a class="name dark-btn" href="/about">
+                    Freere-Aoki
+                </a>
+            </div>
+            <div class="info">
+                <span class="item desc">
+                    你还在期待着什么？
+                </span>
+            </div>
+        </div>
+
+        <div class="menu section">
+            <ul class="clearfix">
+                
+                    <li class="left">
+                        <a href="/about"
+                           onfocus="this.blur();"
+                           class="nav-俺様だ❕ dark-btn block">
+                            About
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/archives"
+                           onfocus="this.blur();"
+                           class="nav-図書館 dark-btn block">
+                            Archives
+                        </a>
+                    </li>
+                
+                    <li class="left">
+                        <a href="/header"
+                           onfocus="this.blur();"
+                           class="nav-俺の頭 dark-btn block">
+                            Header
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/gunName"
+                           onfocus="this.blur();"
+                           class="nav-黑色魅影 dark-btn block">
+                            GunName
+                        </a>
+                    </li>
+                
+                    <li class="left">
+                        <a href="/Links"
+                           onfocus="this.blur();"
+                           class="nav-友人帐 dark-btn block">
+                            LINKS
+                        </a>
+                    </li>
+                
+                    <li class="right">
+                        <a href="/rolex/主页"
+                           onfocus="this.blur();"
+                           class="nav-劳力士 dark-btn block">
+                            Rolex
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="shortcuts">
+        <a href="#header" class="top window-nav dark-btn" id="go-top">
+            <span class="icon icon-chevron-thin-up"></span>
+        </a>
+        <a class="close dark-btn" id="sidebar-close">
+            <span class="icon icon-close"></span>
+        </a>
+        <a href="#footer" class="top window-nav dark-btn" id="go-bottom">
+            <span class="icon icon-chevron-thin-down"></span>
+        </a>
+    </div>
+
+</div>
+
+
+
+
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script>window.jQuery || document.write('<script src="/js/jquery.min.js"><\/script>')</script>
+
+
+<script src="/js/jquery.fitvids.js"></script>
+
+<script>
+  var GOOGLE_CUSTOM_SEARCH_API_KEY = "";
+  var GOOGLE_CUSTOM_SEARCH_ENGINE_ID = "";
+  var ALGOLIA_API_KEY = "";
+  var ALGOLIA_APP_ID = "";
+  var ALGOLIA_INDEX_NAME = "";
+  var AZURE_SERVICE_NAME = "";
+  var AZURE_INDEX_NAME = "";
+  var AZURE_QUERY_KEY = "";
+  var SEARCH_SERVICE = "";
+  var universalSearchConfig = {};
+  if (SEARCH_SERVICE === 'google') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: GOOGLE_CUSTOM_SEARCH_API_KEY,
+      engineId: GOOGLE_CUSTOM_SEARCH_ENGINE_ID,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'algolia') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      apiKey: ALGOLIA_API_KEY,
+      appId: ALGOLIA_APP_ID,
+      indexName: ALGOLIA_INDEX_NAME,
+      imagePath: "/img/"
+    };
+  } else if (SEARCH_SERVICE === 'azure') {
+    universalSearchConfig = {
+      searchService: SEARCH_SERVICE,
+      serviceName: AZURE_SERVICE_NAME,
+      indexName: AZURE_INDEX_NAME,
+      apiKey: AZURE_QUERY_KEY,
+      imagePath: "/img/"
+    };
+  }
+</script>
+
+<script src="/js/app.js"></script>
+
+
+<script src="/js/search.js"></script>
+
+
+
+
+
+<script>setLoadingBarProgress(100);</script>
+
+</body>
+</html>
